@@ -19,6 +19,27 @@ bool areNeighbors(Point a, Point b)
     return (abs(a.x - b.x) + abs(a.y - b.y) + abs(a.z - b.z)) == 2;
 }
 
+class BaseChess
+{
+public:
+    Point position;
+    void set(int x,int y,int z)
+    {
+        position = {x, y, z};
+    }
+    void set(int x, int y)
+    {
+        int z = -x - y;
+        position = {x, y, z};
+    }
+    bool can_move()//vector
+    {
+        return false; // areConnected();
+    }
+};
+
+
+
 // // DFS 遍历连通分量
 // void dfs(Point start, const vector<Point> &points, unordered_set<int> &visited)
 // {
@@ -47,7 +68,7 @@ bool areNeighbors(Point a, Point b)
 // }
 
 // // 判断所有点是否连在一起
-// bool arePointsConnected(const vector<Point> &points)
+// bool areConnected(const vector<Point> &points)
 // {
 //     if (points.empty())
 //         return true;
