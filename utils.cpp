@@ -5,7 +5,7 @@
 using namespace std;
 void test()
 {
-    std::cout << "test" << std::endl;
+    std::cout << "shit" << std::endl;
 }
 
 struct Point
