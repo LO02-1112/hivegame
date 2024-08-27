@@ -6,34 +6,34 @@ using namespace std;
 
 struct Point
 {
-    int x, y, z;
+    int x, z;
     bool operator==(const Point &other) const
     {
-        return x == other.x && y == other.y && z == other.z;
+        return x == other.x && z == other.z;
     }
 };
 
 // 判断两个点是否相邻（曼哈顿距离为 2）
 bool areNeighbors(Point a, Point b)
 {
-    return (abs(a.x - b.x) + abs(a.y - b.y) + abs(a.z - b.z)) == 2;
+    int y1 = -a.x - a.z;
+    int y2 = -b.x - b.z;
+    return (abs(a.x - b.x) + abs(y1 - y2) + abs(a.z - b.z)) == 2;
 }
 
 class Printer
 {
 public:
     string line1="", line2="", line3="";
-    void add(string a,string b,string c)
+    void add(string a,string b)
     {
         line1 += a;
-        line2 += b;
-        line3 += c;        
+        line2 += b;      
     }
     void print()
     {
         cout << line1 << endl;
         cout << line2 << endl;
-        cout << line3 << endl;
         line1 = "";
         line2 = "";
         line3 = "";
@@ -44,18 +44,19 @@ class BaseChess
 {
 public:
     Point position;
+    int layer;
     BaseChess(int x, int y, int z)
     {
-        position = {x, y, z};
+        position = {x,z};
     }
     void set(int x,int y,int z)
     {
-        position = {x, y, z};
+        position = {x,z};
     }
     void set(int x, int y)
     {
         int z = -x - y;
-        position = {x, y, z};
+        position = {x,z};
     }
     bool can_move()//vector
     {
@@ -80,12 +81,11 @@ class Chessboard
 public:
     vector<BaseChess> board;
     Printer printer;
-    int minx=0, maxx=0, miny=0, maxy=0, minz=0, maxz=0;
+    int minx=0, maxx=0,minz=0, maxz=0;
     void add(BaseChess i)
     {
         board.push_back(i);
         set_minmax(&minx, &maxx, &i.position.x);
-        set_minmax(&miny, &maxy, &i.position.y);
         set_minmax(&minz, &maxz, &i.position.z);
         //cout << minx << maxx << miny << maxy << minz << maxz << endl;
     }
@@ -97,19 +97,19 @@ public:
         {   
             if (z%2!=0)
             {
-                printer.add("   ", "   ", "   ");
+                printer.add("  ", "  ");
             }
             for (int x = minx; x <= maxx; x++)
             {
-                Point a = {x, -x - z, z};
+                Point a = {x,z};
                 if (board[p].position==a)
                 {
                     p++;
-                    printer.add("#  #  #", "#  x  #", "#  #  #");
+                    printer.add("#  #", "#  x");
                 }
-                else
-                {
-                    printer.add("       ", "       ", "       ");
+                else 
+                {   if(p!=0)
+                        printer.add("    ", "    ");
                 }
             }
             printer.print();
@@ -169,11 +169,19 @@ public:
 void test()
 {
     BaseChess a(0, 1, -1);
-    BaseChess b(0, 0, 0);
-    BaseChess c(0, -1, 1);
+    BaseChess b(-1, 1, 0);
+    BaseChess c(-1, 0, 1);
+    BaseChess d(0, -1, 1);
+    BaseChess e(1, -1, 0);
+    BaseChess f(1, 0, -1);
+    BaseChess g(0, 0, 0);
     Chessboard x;
     x.add(a);
+    x.add(f);
     x.add(b);
+    x.add(g);
+    x.add(e);
     x.add(c);
+    x.add(d);
     x.print();
 }
