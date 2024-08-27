@@ -3,11 +3,26 @@
 #include "utils.h"
 #include <unordered_set>
 #include <windows.h>
-
-void SetColor(int color)
-{
+// 定义一些颜色常量
+#define BLACK         0
+#define BLUE          1
+#define GREEN         2
+#define CYAN          3
+#define RED           4
+#define MAGENTA       5
+#define YELLOW        6
+#define WHITE         7
+#define GRAY          8
+#define BRIGHT_BLUE   9
+#define BRIGHT_GREEN  10
+#define BRIGHT_CYAN   11
+#define BRIGHT_RED    12
+#define BRIGHT_MAGENTA 13
+#define BRIGHT_YELLOW 14
+#define BRIGHT_WHITE  15
+void SetConsoleColor(int textColor, int backgroundColor = BLACK) {
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-    SetConsoleTextAttribute(hConsole, color);
+    SetConsoleTextAttribute(hConsole, (backgroundColor << 4) | textColor);
 }
 
 using namespace std;
@@ -52,16 +67,15 @@ public:
     }
     void print()
     {
-        HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
         for (int x = 0; x <= line1.size()-1; x++)
         {
             if (line1[x].color==0)
             {
-                SetColor(7);
+                SetConsoleColor(RED,BLACK);
             }
             else
             {
-                SetColor(4);
+                SetConsoleColor(GREEN,BLACK);
             }
             cout << line1[x].str;
         }
@@ -70,11 +84,11 @@ public:
         {
             if (line2[x].color == 0)
             {
-                cout << "\033[0m";
+                SetConsoleColor(RED,BLACK);
             }
             else
             {
-                cout << "\033[31m";
+                SetConsoleColor(GREEN,BLACK);
             }
             cout << line2[x].str;
         }
@@ -106,7 +120,7 @@ public:
     }
     graph to_graph()
     {
-        graph x{0, "x  x", "x  x"};
+        graph x{color, "x  x", "x  x"};
         return x;
     }
 };
