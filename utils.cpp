@@ -108,7 +108,7 @@ public:
                     printer.add("#  #  #", "#  x  #", "#  #  #");
                 }
                 else
-                {
+                { if(p!=0)
                     printer.add("       ", "       ", "       ");
                 }
             }
