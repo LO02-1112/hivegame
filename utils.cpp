@@ -174,7 +174,7 @@ void test()
     BaseChess d(0, -1, 1);
     BaseChess e(1, -1, 0);
     BaseChess f(1, 0, -1);
-    BaseChess g(0, 0, 0);
+    BaseChess g(0, 0, 0); 
     Chessboard x;
     x.add(a);
     x.add(f);
