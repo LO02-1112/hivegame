@@ -120,7 +120,7 @@ public:
     }
     graph to_graph()
     {
-        graph x{color, "x  x", "x  x"};
+        graph x = {color, "□  □", "□  □"};
         return x;
     }
 };
@@ -158,7 +158,7 @@ public:
         {   
             if (z%2!=0)
             {
-                graph x{0, "  ", "  "};
+                graph x = {0, "  ", "  "};
                 printer.add(x);
             }
             for (int x = minx; x <= maxx; x++)
@@ -172,7 +172,7 @@ public:
                 else 
                 {   if(p!=0)
                     {
-                        graph x{0, "    ", "    "};
+                        graph x = {0, "    ", "    "};
                         printer.add(x);
                     }
                        

@@ -4,8 +4,8 @@ using namespace std;
 
 int main()
 {
-    //system("chcp 65001");
+    system("chcp 65001");
     test();
-    system("pause");
+    //system("pause");
     return 0;
 }

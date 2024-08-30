@@ -3,3 +3,5 @@ gitpush.bat
 gitfetch.bat
 main.exe
 utils.exe
+out
+build
