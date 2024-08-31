@@ -1,8 +1,10 @@
 #include <iostream>
 #include <vector>
+#include <map>
 #include "utils.h"
 #include <unordered_set>
 #include <windows.h>
+#include "chess.h"
 // 定义一些颜色常量
 #define BLACK         0
 #define BLUE          1
@@ -27,25 +29,6 @@ void SetConsoleColor(int textColor, int backgroundColor = BLACK) {
 
 using namespace std;
 
-struct Point
-{
-    int x, z;
-    bool operator==(const Point &other) const
-    {
-        return x == other.x && z == other.z;
-    }
-};
-struct graph
-{
-    int color;
-    string line1;
-    string line2;
-};
-struct single_line
-{
-    int color;
-    string str;
-};
 // 判断两个点是否相邻（曼哈顿距离为 2）
 bool areNeighbors(Point a, Point b)
 {
@@ -54,76 +37,56 @@ bool areNeighbors(Point a, Point b)
     return (abs(a.x - b.x) + abs(y1 - y2) + abs(a.z - b.z)) == 2;
 }
 
-class Printer
+// 打印机,add输入（结构体<颜色:int,第一行图案:str>）
+class Printer 
 {
 public:
-    vector<single_line> line1, line2;
+    vector<graph> line1;//, line2;
     void add(graph x)
     {
-        single_line a = {x.color, x.line1};
+        graph a = {x.color, x.line1};
         line1.push_back(a);
-        a = {x.color, x.line2};
-        line2.push_back(a);
+        // a = {x.color, x.line2};
+        // line2.push_back(a);
     }
     void print()
     {
         for (int x = 0; x <= line1.size()-1; x++)
         {
-            if (line1[x].color==0)
+            if (line1[x].color == -1)
             {
-                SetConsoleColor(RED,BLACK);
+                SetConsoleColor(WHITE, BLACK);
             }
-            else
+            else if (line1[x].color == 0)
             {
-                SetConsoleColor(GREEN,BLACK);
+                SetConsoleColor(RED, YELLOW);
             }
-            cout << line1[x].str;
+            else if (line1[x].color >=0)
+            {
+                SetConsoleColor(GREEN,BLUE);
+            }
+            cout << line1[x].line1;
         }
         cout << endl;
-        for (int x = 0; x <= line2.size()-1; x++)
-        {
-            if (line2[x].color == 0)
-            {
-                SetConsoleColor(RED,BLACK);
-            }
-            else
-            {
-                SetConsoleColor(GREEN,BLACK);
-            }
-            cout << line2[x].str;
-        }
-        cout << endl;
+        // for (int x = 0; x <= line2.size()-1; x++)
+        // {
+        //     if (line2[x].color == 0)
+        //     {
+        //         SetConsoleColor(RED,BLACK);
+        //     }
+        //     else
+        //     {
+        //         SetConsoleColor(GREEN,BLACK);
+        //     }
+        //     cout << line2[x].str;
+        // }
+        //cout << endl;
         line1.clear();
-        line2.clear();
+        // line2.clear();
     }
 };
 
-class BaseChess
-{
-public:
-    Point position;
-    int layer,id;
-    int color;
-    BaseChess(int x,int z,int c)
-    {
-        color = c;
-        position = {x,z};
-    }
-    void set(int x, int z, int c)
-    {
-        color = c;
-        position = {x,z};
-    }
-    bool can_move()//vector
-    {
-        return false; // areConnected();
-    }
-    graph to_graph()
-    {
-        graph x{color, "x  x", "x  x"};
-        return x;
-    }
-};
+
 
 void set_minmax(int* min,int* max,int* target)
 {
@@ -137,42 +100,45 @@ void set_minmax(int* min,int* max,int* target)
     }
 }
 
+
+//棋盘实现，根据坐标访问每个棋子
+//每次添加棋子后会自动《扩展》棋盘，方便打印
 class Chessboard
 {
 public:
-    vector<BaseChess> board;
+    multimap<Point,BaseChess> board;
     Printer printer;
     int minx=0, maxx=0,minz=0, maxz=0;
-    void add(BaseChess i)
+    void add(BaseChess i) //添加棋子
     {
-        board.push_back(i);
+        board.insert({i.position,i});
         set_minmax(&minx, &maxx, &i.position.x);
         set_minmax(&minz, &maxz, &i.position.z);
         //cout << minx << maxx << miny << maxy << minz << maxz << endl;
     }
     
-    void print()
+    void print() //输出棋盘
     {
         int p = 0;
         for (int z = minz; z <= maxz;z++)
         {   
             if (z%2!=0)
             {
-                graph x{0, "  ", "  "};
+                graph x = {-1, " "};//奇数Z
                 printer.add(x);
             }
             for (int x = minx; x <= maxx; x++)
             {
                 Point a = {x,z};
-                if (board[p].position==a)
+                if (board.count(a)>0)
                 {
-                    printer.add(board[p].to_graph());
+                    printer.add(board.upper_bound(a)->second.to_graph());
                     p++;
                 }
                 else 
                 {   if(p!=0)
                     {
-                        graph x{0, "    ", "    "};
+                        graph x = {-1, "  "};//输出2格空气
                         printer.add(x);
                     }
                        
