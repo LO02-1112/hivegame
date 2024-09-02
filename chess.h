@@ -30,11 +30,12 @@ public:
     {
         return false; // areConnected();
     }
-    graph to_graph()//定义棋子的图形输出
+    graph to_graph() // 定义棋子的图形输出
     {        
         string cha(1, id.id);
-        string a = cha + "    " + cha;
-        graph x = {id.player, a, "  🐜  ", a}; // 1个emoji=2个字符位
+        string line13 = cha + "    " + cha;
+        string line2 = "  " +pattern+ "  ";
+        graph x = {id.player, line13,line2, line13}; // 1个emoji=2个字符位
         return x;
     }
 };
