@@ -5,6 +5,7 @@
 #include <unordered_set>
 #include <unordered_map>
 #include <windows.h>
+#include <memory>
 #include "chess.h"
 // 定义一些颜色常量
 #define BLACK         0
@@ -132,20 +133,18 @@ void set_minmax(int* min,int* max,int target)
 class Chessboard
 {
 public:
-    map<Point,BaseChess> board;//棋盘实现，根据坐标访问每个棋子
+    map<Point,unique_ptr<BaseChess>> board; // 棋盘实现，根据坐标访问每个棋子
     map<cid, Point> id2pnt;     // 根据玩家和棋子id（键盘字母）访问坐标
     Printer printer;
     int minx=0, maxx=0,minz=0, maxz=0;
     
     // 添加棋子：坐标，棋子
-    void add(Point p, BaseChess i) 
-    {
-        board.insert({p,i});
-        id2pnt.insert({i.id,p});
+    void add(Point p, unique_ptr<BaseChess> i)
+    {   
+        id2pnt.insert({i->id,p});
+        board.insert({p,move(i)});        
         set_minmax(&minx, &maxx, p.x);
         set_minmax(&minz, &maxz, p.z);
-        //cout << p.x << p.z << i.id.id << endl;
-        //cout << minx << maxx << minz << maxz << endl;
     }
     
     void print() //输出棋盘
@@ -167,7 +166,7 @@ public:
                     a = {x, z,layer};
                     if (board.find(a)!=board.end())
                     {
-                    printer.add(board.find(a)->second.to_graph());
+                    printer.add(board.find(a)->second->to_graph());
                     foundxz = true;
                     p++;
                     break;
@@ -237,20 +236,20 @@ public:
 // }
 void test()
 {
-    BaseChess a(1, 'a');
-    BaseChess b(2, 'b');
-    BaseChess c(1, 'c');
-    BaseChess d(2, 'd');
-    BaseChess e(1, 'e');
-    BaseChess f(2, 'f');
-    BaseChess g(1, 'g');
+    unique_ptr<BaseChess> a = make_unique<BaseChess>(1, 'a');
+    unique_ptr<BaseChess> b = make_unique<BaseChess>(2, 'b');
+    unique_ptr<BaseChess> c = make_unique<BaseChess>(1, 'c');
+    unique_ptr<BaseChess> d = make_unique<BaseChess>(2, 'd');
+    unique_ptr<BaseChess> e = make_unique<BaseChess>(1, 'e');
+    unique_ptr<BaseChess> f = make_unique<BaseChess>(2, 'f');
+    unique_ptr<BaseChess> g = make_unique<BaseChess>(1, 'g');
     Chessboard x;
-    x.add({0, -1},a);
-    x.add({-1, 0}, b);
-    x.add({-1, 1}, c);
-    x.add({0, 1}, d);
-    x.add({1, 0}, e);
-    x.add({1, -1}, f);
-    x.add({0, 0}, g);
+    x.add({0, -1},move(a));
+    x.add({-1, 0}, move(b));
+    x.add({-1, 1}, move(c));
+    x.add({0, 1}, move(d));
+    x.add({1, 0}, move(e));
+    x.add({1, -1},move(f));
+    x.add({0, 0}, move(g));
     x.print();
 }
