@@ -5,18 +5,23 @@ using namespace std;
 
 struct Point
 {
-    int x, z;
+    int x, z,layer;
+    Point(int x, int z) : x(x), z(z),layer(0){};
     bool operator==(const Point &other) const
     {
-        return x == other.x && z == other.z;
+        return x == other.x && z == other.z && layer == other.layer;
     }
     bool operator<(const Point &other) const
     {
         if (z != other.z)
         {
             return z < other.z;
-        }            
-        return x < other.x;
+        }
+        if (x!=other.x)   
+        {
+            return x < other.x;
+        }
+        return layer < other.layer;
     }
 };
 struct graph

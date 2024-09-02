@@ -132,7 +132,7 @@ void set_minmax(int* min,int* max,int target)
 class Chessboard
 {
 public:
-    multimap<Point,BaseChess> board;//棋盘实现，根据坐标访问每个棋子
+    map<Point,BaseChess> board;//棋盘实现，根据坐标访问每个棋子
     map<cid, Point> map;     // 根据玩家和棋子id（键盘字母）访问坐标
     Printer printer;
     int minx=0, maxx=0,minz=0, maxz=0;
@@ -144,7 +144,7 @@ public:
         map.insert({i.id,p});
         set_minmax(&minx, &maxx, p.x);
         set_minmax(&minz, &maxz, p.z);
-        cout << p.x << p.z << i.id.id << endl;
+        //cout << p.x << p.z << i.id.id << endl;
         //cout << minx << maxx << minz << maxz << endl;
     }
     
@@ -155,7 +155,7 @@ public:
         {   
             if (z%2!=0)
             {
-                graph g = {-1, "  ", "  ", "  "}; // 奇数Z
+                graph g = {-1, "   ", "   ", "   "}; // 奇数Z
                 printer.add(g);
             }
             for (int x = minx; x <= maxx; x++)
@@ -163,14 +163,14 @@ public:
                 Point a = {x,z};
                 if (board.count(a)>0)
                 {
-                    printer.add(board.upper_bound(a)->second.to_graph());
-                    // cout << x << z;
+                    printer.add(board.find(a)->second.to_graph());
+                    //cout << x << z << board.upper_bound(a)->second.id.id<< endl;
                     p++;
                 }
                 else 
                 {   if(p!=0)
                     {
-                        graph g = {-1, "    ", "    ", "    "}; // 输出4格空气
+                        graph g = {-1, "      ", "      ", "      "}; // 输出6格空气
                         printer.add(g);
                     }
                        

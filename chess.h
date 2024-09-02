@@ -33,8 +33,8 @@ public:
     graph to_graph()//定义棋子的图形输出
     {        
         string cha(1, id.id);
-        string a = cha + "  " + cha;
-        graph x = {id.player, a, " 🐜 ", a}; // 1个emoji=2个字符位
+        string a = cha + "    " + cha;
+        graph x = {id.player, a, "  🐜  ", a}; // 1个emoji=2个字符位
         return x;
     }
 };
