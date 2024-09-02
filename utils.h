@@ -6,7 +6,6 @@ using namespace std;
 struct Point
 {
     int x, z,layer;
-    Point(int x, int z) : x(x), z(z),layer(0){};
     bool operator==(const Point &other) const
     {
         return x == other.x && z == other.z && layer == other.layer;

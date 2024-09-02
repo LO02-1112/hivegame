@@ -133,7 +133,7 @@ class Chessboard
 {
 public:
     map<Point,BaseChess> board;//棋盘实现，根据坐标访问每个棋子
-    map<cid, Point> map;     // 根据玩家和棋子id（键盘字母）访问坐标
+    map<cid, Point> id2pnt;     // 根据玩家和棋子id（键盘字母）访问坐标
     Printer printer;
     int minx=0, maxx=0,minz=0, maxz=0;
     
@@ -141,7 +141,7 @@ public:
     void add(Point p, BaseChess i) 
     {
         board.insert({p,i});
-        map.insert({i.id,p});
+        id2pnt.insert({i.id,p});
         set_minmax(&minx, &maxx, p.x);
         set_minmax(&minz, &maxz, p.z);
         //cout << p.x << p.z << i.id.id << endl;
@@ -160,21 +160,26 @@ public:
             }
             for (int x = minx; x <= maxx; x++)
             {
-                Point a = {x,z};
-                if (board.count(a)>0)
+                Point a;
+                bool foundxz=false;
+                for (int layer = 5; layer >= 0; layer--)
                 {
+                    a = {x, z,layer};
+                    if (board.find(a)!=board.end())
+                    {
                     printer.add(board.find(a)->second.to_graph());
-                    //cout << x << z << board.upper_bound(a)->second.id.id<< endl;
+                    foundxz = true;
                     p++;
+                    break;
+                    }
                 }
-                else 
-                {   if(p!=0)
+                if(p!=0&&!foundxz)
                     {
                         graph g = {-1, "      ", "      ", "      "}; // 输出6格空气
                         printer.add(g);
                     }
                        
-                }
+                
             }
             printer.print();
         }
