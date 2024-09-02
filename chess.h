@@ -19,14 +19,10 @@ class BaseChess
 public:
     //Point position;
     cid id;
-    string pattern="🐜";
-    BaseChess(int player, char idx) : id({player, idx}) {}
-    // void set(int x, int z, int c)
-    // {
-    //     color = c;
-    //     position = {x, z};
-    // }
-    bool can_move() // vector
+    string pattern;
+    BaseChess(int player, char idx) : id({player, idx}),pattern("XX") {}
+    BaseChess(int player, char idx,string pattern) : id({player, idx}), pattern(pattern) {}
+    bool can_move()
     {
         return false; // areConnected();
     }
@@ -38,4 +34,39 @@ public:
         graph x = {id.player, line13,line2, line13}; // 1个emoji=2个字符位
         return x;
     }
+};
+
+//蜂王
+class Beequeen:public BaseChess
+{
+public:
+    Beequeen(int player, char idx) : BaseChess(player, idx,"🐝") {};
+};
+
+//蚱蜢
+class Grasshopper : public BaseChess
+{
+public:
+    Grasshopper(int player, char idx) : BaseChess(player, idx, "🦗") {};
+};
+
+//蚂蚁
+class Ant : public BaseChess
+{
+public:
+    Ant(int player, char idx) : BaseChess(player, idx, "🐜") {};
+};
+
+//甲虫
+class Beetle : public BaseChess
+{
+public:
+    Beetle(int player, char idx) : BaseChess(player, idx, "🪲") {};
+};
+
+//蜘蛛
+class Spider : public BaseChess
+{
+public:
+    Spider(int player, char idx) : BaseChess(player, idx, "🕷️") {};
 };
