@@ -13,7 +13,9 @@ struct Point
     bool operator<(const Point &other) const
     {
         if (z != other.z)
+        {
             return z < other.z;
+        }            
         return x < other.x;
     }
 };
@@ -21,11 +23,13 @@ struct graph
 {
     int color;
     string line1;
+    string line2;
+    string line3;
 };
-// struct single_line
-// {
-//     int color;
-//     string str;
-// };
+struct single_line
+{
+    int color;
+    string str;
+};
 void test();
 #endif

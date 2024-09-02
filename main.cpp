@@ -1,5 +1,6 @@
 #include <iostream>
 #include "utils.h"
+#include "chess.h"
 #include <windows.h>
 using namespace std;
 void setConsoleWindowBufferSize(short width, short height)
@@ -8,6 +9,7 @@ void setConsoleWindowBufferSize(short width, short height)
     COORD bufferSize = {width, height};
     SetConsoleScreenBufferSize(hConsole, bufferSize);
 }
+
 int main()
 {
     system("chcp 65001");

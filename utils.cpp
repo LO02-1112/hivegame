@@ -3,6 +3,7 @@
 #include <map>
 #include "utils.h"
 #include <unordered_set>
+#include <unordered_map>
 #include <windows.h>
 #include "chess.h"
 // 定义一些颜色常量
@@ -37,17 +38,20 @@ bool areNeighbors(Point a, Point b)
     return (abs(a.x - b.x) + abs(y1 - y2) + abs(a.z - b.z)) == 2;
 }
 
-// 打印机,add输入（结构体<颜色:int,第一行图案:str>）
+// 打印机,add输入（结构体<颜色:int,第n行图案:str>）
 class Printer 
 {
 public:
-    vector<graph> line1;//, line2;
+    vector<single_line> line1, line2, line3; //;
     void add(graph x)
     {
-        graph a = {x.color, x.line1};
+        single_line a;
+        a= {x.color, x.line1};
         line1.push_back(a);
-        // a = {x.color, x.line2};
-        // line2.push_back(a);
+        a = {x.color, x.line2};
+        line2.push_back(a);
+        a = {x.color, x.line3};
+        line3.push_back(a);
     }
     void print()
     {
@@ -57,64 +61,91 @@ public:
             {
                 SetConsoleColor(WHITE, BLACK);
             }
-            else if (line1[x].color == 0)
+            else if (line1[x].color == 1)
             {
                 SetConsoleColor(RED, YELLOW);
             }
-            else if (line1[x].color >=0)
+            else if (line1[x].color >=2)
             {
                 SetConsoleColor(GREEN,BLUE);
             }
-            cout << line1[x].line1;
+            cout << line1[x].str;
         }
         cout << endl;
-        // for (int x = 0; x <= line2.size()-1; x++)
-        // {
-        //     if (line2[x].color == 0)
-        //     {
-        //         SetConsoleColor(RED,BLACK);
-        //     }
-        //     else
-        //     {
-        //         SetConsoleColor(GREEN,BLACK);
-        //     }
-        //     cout << line2[x].str;
-        // }
-        //cout << endl;
+        for (int x = 0; x <= line2.size()-1; x++)
+        {
+            if (line2[x].color == -1)
+            {
+                SetConsoleColor(WHITE, BLACK);
+            }
+            else if (line2[x].color == 1)
+            {
+                SetConsoleColor(RED, YELLOW);
+            }
+            else if (line2[x].color >= 2)
+            {
+                SetConsoleColor(GREEN, BLUE);
+            }
+            cout << line2[x].str;
+        }
+        cout << endl;
+        for (int x = 0; x <= line3.size() - 1; x++)
+        {
+            if (line3[x].color == -1)
+            {
+                SetConsoleColor(WHITE, BLACK);
+            }
+            else if (line3[x].color == 1)
+            {
+                SetConsoleColor(RED, YELLOW);
+            }
+            else if (line3[x].color >= 2)
+            {
+                SetConsoleColor(GREEN, BLUE);
+            }
+            cout << line3[x].str;
+        }
+        cout << endl;
         line1.clear();
-        // line2.clear();
+        line2.clear();
+        line3.clear();
     }
 };
 
 
 
-void set_minmax(int* min,int* max,int* target)
+void set_minmax(int* min,int* max,int target)
 {
-    if (*min > *target)
+    if (*min > target)
     {
-        *min = *target;
+        *min = target;
     }
-    else if (*max < *target)
+    else if (*max < target)
     {
-        *max = *target;
+        *max = target;
     }
 }
 
 
-//棋盘实现，根据坐标访问每个棋子
+
 //每次添加棋子后会自动《扩展》棋盘，方便打印
 class Chessboard
 {
 public:
-    multimap<Point,BaseChess> board;
+    multimap<Point,BaseChess> board;//棋盘实现，根据坐标访问每个棋子
+    map<cid, Point> map;     // 根据玩家和棋子id（键盘字母）访问坐标
     Printer printer;
     int minx=0, maxx=0,minz=0, maxz=0;
-    void add(BaseChess i) //添加棋子
+    
+    // 添加棋子：坐标，棋子
+    void add(Point p, BaseChess i) 
     {
-        board.insert({i.position,i});
-        set_minmax(&minx, &maxx, &i.position.x);
-        set_minmax(&minz, &maxz, &i.position.z);
-        //cout << minx << maxx << miny << maxy << minz << maxz << endl;
+        board.insert({p,i});
+        map.insert({i.id,p});
+        set_minmax(&minx, &maxx, p.x);
+        set_minmax(&minz, &maxz, p.z);
+        cout << p.x << p.z << i.id.id << endl;
+        //cout << minx << maxx << minz << maxz << endl;
     }
     
     void print() //输出棋盘
@@ -124,8 +155,8 @@ public:
         {   
             if (z%2!=0)
             {
-                graph x = {-1, " "};//奇数Z
-                printer.add(x);
+                graph g = {-1, "  ", "  ", "  "}; // 奇数Z
+                printer.add(g);
             }
             for (int x = minx; x <= maxx; x++)
             {
@@ -133,13 +164,14 @@ public:
                 if (board.count(a)>0)
                 {
                     printer.add(board.upper_bound(a)->second.to_graph());
+                    // cout << x << z;
                     p++;
                 }
                 else 
                 {   if(p!=0)
                     {
-                        graph x = {-1, "  "};//输出2格空气
-                        printer.add(x);
+                        graph g = {-1, "    ", "    ", "    "}; // 输出4格空气
+                        printer.add(g);
                     }
                        
                 }
@@ -200,20 +232,20 @@ public:
 // }
 void test()
 {
-    BaseChess a(0,-1,0);
-    BaseChess b(-1,0,99);
-    BaseChess c(-1,1,99);
-    BaseChess d(0,1,99);
-    BaseChess e(1,0,0);
-    BaseChess f(1,-1,0);
-    BaseChess g(0,0,99); 
+    BaseChess a(1, 'a');
+    BaseChess b(2, 'b');
+    BaseChess c(1, 'c');
+    BaseChess d(2, 'd');
+    BaseChess e(1, 'e');
+    BaseChess f(2, 'f');
+    BaseChess g(1, 'g');
     Chessboard x;
-    x.add(a);
-    x.add(f);
-    x.add(b);
-    x.add(g);
-    x.add(e);
-    x.add(c);
-    x.add(d);
+    x.add({0, -1},a);
+    x.add({-1, 0}, b);
+    x.add({-1, 1}, c);
+    x.add({0, 1}, d);
+    x.add({1, 0}, e);
+    x.add({1, -1}, f);
+    x.add({0, 0}, g);
     x.print();
 }
