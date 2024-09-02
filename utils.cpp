@@ -64,11 +64,12 @@ public:
             }
             else if (line1[x].color == 1)
             {
-                SetConsoleColor(RED, YELLOW);
+                SetConsoleColor(RED, BRIGHT_YELLOW);
             }
             else if (line1[x].color >=2)
             {
-                SetConsoleColor(GREEN,BLUE);
+
+                SetConsoleColor(WHITE, BRIGHT_RED);
             }
             cout << line1[x].str;
         }
@@ -81,11 +82,11 @@ public:
             }
             else if (line2[x].color == 1)
             {
-                SetConsoleColor(RED, YELLOW);
+                SetConsoleColor(RED, BRIGHT_YELLOW);
             }
             else if (line2[x].color >= 2)
             {
-                SetConsoleColor(GREEN, BLUE);
+                SetConsoleColor(WHITE, BRIGHT_RED);
             }
             cout << line2[x].str;
         }
@@ -98,11 +99,11 @@ public:
             }
             else if (line3[x].color == 1)
             {
-                SetConsoleColor(RED, YELLOW);
+                SetConsoleColor(RED, BRIGHT_YELLOW);
             }
             else if (line3[x].color >= 2)
             {
-                SetConsoleColor(GREEN, BLUE);
+                SetConsoleColor(WHITE, BRIGHT_RED);
             }
             cout << line3[x].str;
         }
@@ -236,12 +237,12 @@ public:
 // }
 void test()
 {
-    unique_ptr<BaseChess> a = make_unique<BaseChess>(1, 'a');
-    unique_ptr<BaseChess> b = make_unique<BaseChess>(2, 'b');
+    unique_ptr<BaseChess> a = make_unique<Beequeen>(1, 'a');
+    unique_ptr<BaseChess> b = make_unique<Spider>(2, 'b');
     unique_ptr<BaseChess> c = make_unique<BaseChess>(1, 'c');
-    unique_ptr<BaseChess> d = make_unique<BaseChess>(2, 'd');
-    unique_ptr<BaseChess> e = make_unique<BaseChess>(1, 'e');
-    unique_ptr<BaseChess> f = make_unique<BaseChess>(2, 'f');
+    unique_ptr<BaseChess> d = make_unique<Grasshopper>(2, 'd');
+    unique_ptr<BaseChess> e = make_unique<Beetle>(1, 'e');
+    unique_ptr<BaseChess> f = make_unique<Ant>(2, 'f');
     unique_ptr<BaseChess> g = make_unique<BaseChess>(1, 'g');
     Chessboard x;
     x.add({0, -1},move(a));
