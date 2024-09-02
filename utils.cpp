@@ -54,57 +54,38 @@ public:
         a = {x.color, x.line3};
         line3.push_back(a);
     }
+    void set_color(int color)
+    {
+        if (color == -1)
+        {
+            SetConsoleColor(WHITE, BLACK);
+        }
+        else if (color == 1)
+        {
+            SetConsoleColor(RED, BRIGHT_YELLOW);
+        }
+        else if (color >= 2)
+        {
+            SetConsoleColor(WHITE, BRIGHT_RED);
+        }
+    }
     void print()
     {
         for (int x = 0; x <= line1.size()-1; x++)
         {
-            if (line1[x].color == -1)
-            {
-                SetConsoleColor(WHITE, BLACK);
-            }
-            else if (line1[x].color == 1)
-            {
-                SetConsoleColor(RED, BRIGHT_YELLOW);
-            }
-            else if (line1[x].color >=2)
-            {
-
-                SetConsoleColor(WHITE, BRIGHT_RED);
-            }
+            set_color(line1[x].color);
             cout << line1[x].str;
         }
         cout << endl;
         for (int x = 0; x <= line2.size()-1; x++)
         {
-            if (line2[x].color == -1)
-            {
-                SetConsoleColor(WHITE, BLACK);
-            }
-            else if (line2[x].color == 1)
-            {
-                SetConsoleColor(RED, BRIGHT_YELLOW);
-            }
-            else if (line2[x].color >= 2)
-            {
-                SetConsoleColor(WHITE, BRIGHT_RED);
-            }
+            set_color(line2[x].color);
             cout << line2[x].str;
         }
         cout << endl;
         for (int x = 0; x <= line3.size() - 1; x++)
         {
-            if (line3[x].color == -1)
-            {
-                SetConsoleColor(WHITE, BLACK);
-            }
-            else if (line3[x].color == 1)
-            {
-                SetConsoleColor(RED, BRIGHT_YELLOW);
-            }
-            else if (line3[x].color >= 2)
-            {
-                SetConsoleColor(WHITE, BRIGHT_RED);
-            }
+            set_color(line3[x].color);
             cout << line3[x].str;
         }
         cout << endl;
