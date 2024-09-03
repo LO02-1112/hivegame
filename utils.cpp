@@ -46,7 +46,7 @@ unordered_set<Point, PointHash> enum_nearby(Point p)
         {
             if (x!=z)
             {
-                ret.insert({x, z, p.layer});
+                ret.insert({p.x + x, p.z+z, p.layer});
             }
         }
     }

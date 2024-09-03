@@ -2,21 +2,23 @@
 #include "utils.h"
 #include "printer.h"
 #include "chess.h"
-void Chessboard::add(Point p, unique_ptr<Chess> i) {
+// #include <iostream>
+void Chessboard::add(Point p, shared_ptr<Chess> i) {
     id2pnt.insert({i->id,p});
     board.insert({p,move(i)});        
     set_minmax(&minx, &maxx, p.x);
-    set_minmax(&minz, &maxz, p.z);
+    set_minmax(&minz, &maxz, p.z);    
 }
 
 void Chessboard::print() { //输出棋盘
     int p = 0;
+    // std::cout <<minx<<maxx<<minz<<maxz<<std::endl;
     for (int z = minz; z <= maxz;z++)
-    {   
-        if (z%2!=0)
+    {
+        for (int p = 0; p<z - minz;p++)
         {
-            graph g = {-1, "   ", "   ", "   "}; // 奇数Z
-            printer.add(g);
+            graph g = {-1, "   ", "   ", "   "}; // 输出3格空气
+            printer.add(g);                    
         }
         for (int x = minx; x <= maxx; x++)
         {
@@ -24,18 +26,18 @@ void Chessboard::print() { //输出棋盘
             bool foundxz=false;
             for (int layer = 5; layer >= 0; layer--){
                 a = {x, z,layer};
-                if (board.find(a)!=board.end())
+                if (board.count(a)>0)
                 {
                     printer.add(board.find(a)->second->to_graph());
                     foundxz = true;
-                    p++;
                     break;
+                    p++;
                 }
             }
-            if(p!=0&&!foundxz){
+            if(!foundxz){
                 graph g = {-1, "      ", "      ", "      "}; // 输出6格空气
-                printer.add(g);
-            }
+                printer.add(g); 
+                }            
         }
         printer.print();
     }
