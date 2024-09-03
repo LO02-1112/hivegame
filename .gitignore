@@ -5,3 +5,4 @@ main.exe
 utils.exe
 out
 build
+CMakePresets.json
