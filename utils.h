@@ -1,6 +1,7 @@
 #ifndef UTILS_H
 #define UTILS_H
 #include<string>
+#include <unordered_set>
 using namespace std;
 
 void SetConsoleColor(int textColor, int backgroundColor);
@@ -33,5 +34,6 @@ struct single_line
     int color;
     string str;
 };
-void set_minmax(int* min,int* max,int target);
+unordered_set<Point, PointHash> enum_nearby(Point p);
+void set_minmax(int *min, int *max, int target);
 #endif
