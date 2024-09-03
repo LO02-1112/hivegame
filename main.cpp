@@ -18,7 +18,6 @@ void test()
     Chessboard x;
     x.add({0, -1, 0},move(a));
     x.add({-1, 0, 0}, move(b));
-  
     // x.add({-1, 1, 0}, move(c));
     // x.add({0, 1}, move(d));
     // x.add({1, 0}, move(e));
