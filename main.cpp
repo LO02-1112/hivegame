@@ -18,18 +18,18 @@ void test()
     Chessboard x;
     x.add({0, -1, 0},move(a));
     x.add({-1, 0, 0}, move(b));
-    //x.move_chess({2, 'b'}, {-1, 1, 0});
-    x.add({-1, 1, 0}, move(c));
+    // x.add({-1, 1, 0}, move(c));
     // x.add({0, 1}, move(d));
     // x.add({1, 0}, move(e));
     // x.add({1, -1},move(f));
     // x.add({0, 0}, move(g));
     x.print();
     auto x2 = x;
-    auto s = enum_nearby({-1, 1,0});
+    auto s = enum_nearby({-1, 1,0}); 
+    x2.move_chess({2, 'b'}, {-1, 1, 0});
     for (auto it = s.begin(); it!=s.end();it++)
     {
-        x2.add(*it, make_shared<Chess>(0, 's'));
+        x2.add(*it, make_shared<Chess>(-1, 's'));
         // cout << it->x << it->z << endl;
     }
     x2.print();
@@ -38,6 +38,7 @@ void test()
 int main()
 {
     system("chcp 65001");
+    system("cls");
     test();
     system("pause");
     return 0;

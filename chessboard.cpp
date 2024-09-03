@@ -42,6 +42,22 @@ void Chessboard::print() { //输出棋盘
         printer.print();
     }
 }
+
+// 根据玩家号（0=全部,1,2），枚举全部的棋子，返回集合
+std::unordered_set<Point, PointHash> Chessboard::get_chess(int i)
+{
+    unordered_set<Point, PointHash> ret;
+    for (auto it = id2pnt.begin(); it != id2pnt.end(); ++it)
+    {
+        if (i!=0&&it->first.player!= i)
+        {
+            continue;
+        }
+        ret.insert(it->second);
+    }
+    return ret;
+}
+
 void Chessboard::move_chess(cid id,Point target){
     Point origin = id2pnt[id];
     id2pnt[id] = target;

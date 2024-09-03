@@ -17,6 +17,7 @@ public:
     int minx=0, maxx=0,minz=0, maxz=0;    
     void add(Point p, shared_ptr<Chess> i);// 添加棋子：坐标，棋子
     void move_chess(cid id, Point target);//移动棋子
+    std::unordered_set<Point, PointHash> get_chess(int i);
     void print(); // 输出棋盘
 };
 #endif
