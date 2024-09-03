@@ -3,6 +3,7 @@
 #include <unordered_set>
 #include <windows.h>
 #include <memory>
+#include <algorithm>
 #include "chess.h"
 #include "color.h"
 #include "utils.h"
@@ -30,6 +31,12 @@ bool Point::operator<(const Point &other) const {
     return layer < other.layer;
 }
 
+std::ostream& operator<<(std::ostream& os, const Point& p)
+{
+    os << "x=" << p.x << "z=" << p.z << endl;
+    return os;
+}
+
 // 判断两个点是否相邻（曼哈顿距离为 2）
 bool areNeighbors(Point a, Point b)
 {
@@ -37,7 +44,8 @@ bool areNeighbors(Point a, Point b)
     int y2 = -b.x - b.z;
     return (abs(a.x - b.x) + abs(y1 - y2) + abs(a.z - b.z)) == 2;
 }
-unordered_set<Point, PointHash> enum_nearby(Point p)
+
+unordered_set<Point, PointHash> enum_nearby(Point p)//枚举单个点
 {
     unordered_set<Point,PointHash> ret;
     for (int z = -1; z <= 1; z++)
@@ -50,6 +58,17 @@ unordered_set<Point, PointHash> enum_nearby(Point p)
             }
         }
     }
+    return ret;
+}
+unordered_set<Point, PointHash> enum_nearby(unordered_set<Point, PointHash> ps)//枚举一组点
+{
+    unordered_set<Point, PointHash> ret;
+    for (auto it = ps.begin(); it != ps.end(); ++it)
+    {
+        auto x = enum_nearby(*it);
+        set_union(ret.begin(), ret.end(),x.begin(), x.end(),inserter(ret, ret.begin()));        
+    }
+    set_difference(ret.begin(), ret.end(),ps.begin(), ps.end(),inserter(ret, ret.begin()));
     return ret;
 }
 void set_minmax(int *min, int *max, int target)
