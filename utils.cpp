@@ -37,8 +37,22 @@ bool areNeighbors(Point a, Point b)
     int y2 = -b.x - b.z;
     return (abs(a.x - b.x) + abs(y1 - y2) + abs(a.z - b.z)) == 2;
 }
-
-void set_minmax(int* min,int* max,int target)
+unordered_set<Point, PointHash> enum_nearby(Point p)
+{
+    unordered_set<Point,PointHash> ret;
+    for (int z = -1; z <= 1; z++)
+    {
+        for (int x = -1; x <= 1; x++)
+        {
+            if (x!=z)
+            {
+                ret.insert({x, z, p.layer});
+            }
+        }
+    }
+    return ret;
+}
+void set_minmax(int *min, int *max, int target)
 {
     if (*min > target)
     {

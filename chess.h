@@ -13,6 +13,17 @@ struct cid{
             return player < other.player;
         return id < other.id;
     }
+    bool operator==(const cid &other) const
+    {
+        return player == other.player && id == other.id;
+    }
+};
+struct cidHash
+{
+    std::size_t operator()(const cid &p) const
+    {
+        return std::hash<int>()(p.player) ^ (std::hash<int>()(p.id) << 1);
+    }
 };
 //棋子基类定义
 class Chess
@@ -21,7 +32,7 @@ public:
     //Point position;
     cid id;
     string pattern;
-    Chess(int player, char idx) : id({player, idx}),pattern("XX") {}
+    Chess(int player, char idx) : id({player, idx}),pattern("++") {}
     Chess(int player, char idx,string pattern) : id({player, idx}), pattern(pattern) {}
     bool can_move();
     graph to_graph(); // 定义棋子的图形输出
@@ -62,4 +73,10 @@ class Spider : public Chess
 public:
     Spider(int player, char idx) : Chess(player, idx, "🕷️") {};
 };
+
+// class EmptyChess:public Chess
+// {
+// public:
+//     EmptyChess(char idx) : Chess(0, idx) {};
+// };
 #endif

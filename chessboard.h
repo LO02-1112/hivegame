@@ -11,8 +11,8 @@ using namespace std;
 class Chessboard
 {
 public:
-    map<Point,unique_ptr<Chess>> board; // 棋盘实现，根据坐标访问每个棋子
-    map<cid, Point> id2pnt;     // 根据玩家和棋子id（键盘字母）访问坐标
+    unordered_map<Point,unique_ptr<Chess>,PointHash> board; // 棋盘实现，根据坐标访问每个棋子
+    unordered_map<cid, Point,cidHash> id2pnt;// 根据玩家和棋子id（键盘字母）访问坐标
     Printer printer;
     int minx=0, maxx=0,minz=0, maxz=0;
 
