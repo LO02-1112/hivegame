@@ -40,3 +40,12 @@ void Chessboard::print() { //输出棋盘
         printer.print();
     }
 }
+void Chessboard::move_chess(cid id,Point target){
+    Point origin = id2pnt[id];
+    id2pnt[id] = target;
+    auto it=board.find(origin);
+    board.insert({target,move(it->second)});
+    set_minmax(&minx, &maxx, target.x);
+    set_minmax(&minz, &maxz, target.z);
+    board.erase(it);
+}
