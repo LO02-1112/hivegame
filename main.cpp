@@ -38,6 +38,7 @@ void test()
 int main()
 {
     system("chcp 65001");
+    system("cls");
     test();
     system("pause");
     return 0;
