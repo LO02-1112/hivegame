@@ -12,7 +12,8 @@ struct Point
     int x, z,layer;
     bool operator==(const Point &other) const;
     bool operator<(const Point &other) const;
-    friend std::ostream& operator<<(ostream &os, const Point &c);
+    Point operator+(const Point &other) const;
+    friend std::ostream &operator<<(ostream &os, const Point &c);
 };
 
 const std::vector<Point> DIRECTIONS = {

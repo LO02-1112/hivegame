@@ -50,7 +50,7 @@ std::unordered_set<Point, PointHash> Chessboard::get_chess(int i)
     unordered_set<Point, PointHash> ret;
     for (auto it = id2pnt.begin(); it != id2pnt.end(); ++it)
     {
-        if (i!=0&&it->first.player!= i)
+        if ((i != 0 && it->first.player != i) || it->second.layer!=0)//滤除上层棋子
         {
             continue;
         }
@@ -74,11 +74,9 @@ bool Chessboard::bfs(const Point &start, std::unordered_set<Point, PointHash> &A
         Point current = toVisit.front();
         toVisit.pop();
         visited.insert(current);
-
         // 遍历当前棋子的邻居
         for (const Point &direction : DIRECTIONS) {
-            Point neighbor = {current.x + direction.x, current.z + direction.z, current.layer + direction.layer};
-
+            Point neighbor = {current+direction};
             // 如果邻居在网格中，且尚未访问过
             if (Allchesses.find(neighbor) != Allchesses.end() && visited.find(neighbor) == visited.end()) {
                 toVisit.push(neighbor);

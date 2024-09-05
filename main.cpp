@@ -130,8 +130,9 @@ void mian()
     x.add(cmap[enter],p);
     x.print();
     //前2回合于此结束
-    x.add({-1, 1, 0}, move(make_shared<Chess>(1, 'c')));
-    cout << x.isConnected({-1,0,0});
+    x.add({0, 1, 0}, move(make_shared<Chess>(1, 'c')));
+    cout << x.isConnected({-1,1,0});
+    x.print();
 }
 
 int main()

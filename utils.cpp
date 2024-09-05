@@ -30,8 +30,11 @@ bool Point::operator<(const Point &other) const {
     }
     return layer < other.layer;
 }
+Point Point:: operator+(const Point &other) const{
+    return {x+other.x,z+other.z,layer+other.layer};
+}
 
-std::ostream& operator<<(std::ostream& os, const Point& p)
+std::ostream &operator<<(std::ostream &os, const Point &p)
 {
     os << "x=" << p.x << "z=" << p.z << endl;
     return os;
@@ -48,16 +51,12 @@ bool areNeighbors(Point a, Point b)
 unordered_set<Point, PointHash> enum_nearby(Point p)//枚举单个点
 {
     unordered_set<Point,PointHash> ret;
-    for (int z = -1; z <= 1; z++)
-    {
-        for (int x = -1; x <= 1; x++)
-        {
-            if (x!=z)
-            {
-                ret.insert({p.x + x, p.z+z, p.layer});
-            }
-        }
-    }
+    ret.insert(p + Point{1, -1, 0});
+    ret.insert(p + Point{1, 0, 0});
+    ret.insert(p + Point{0, 1, 0});
+    ret.insert(p + Point{-1, 1, 0});
+    ret.insert(p + Point{-1, 0, 0});
+    ret.insert(p + Point{0, -1, 0});
     return ret;
 }
 unordered_set<Point, PointHash> enum_nearby(unordered_set<Point, PointHash> ps)//枚举一组点
