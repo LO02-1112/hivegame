@@ -2,6 +2,7 @@
 #include "utils.h"
 #include "printer.h"
 #include "chess.h"
+#include "utils.h"
 // #include <iostream>
 void Chessboard::add(Point p, shared_ptr<Chess> i) {
     id2pnt.insert({i->id,p});
@@ -56,6 +57,38 @@ std::unordered_set<Point, PointHash> Chessboard::get_chess(int i)
         ret.insert(it->second);
     }
     return ret;
+}
+bool Chessboard::isConnected(const Point& start){   //判断棋盘连通性
+    std::unordered_set<Point, PointHash> Allchesses = get_chess(0);
+    Allchesses.erase(start);
+    if (bfs(start, Allchesses)) {
+        return true;
+    }
+    return false;
+}
+bool Chessboard::bfs(const Point &start, std::unordered_set<Point, PointHash> &Allchesses) {
+    std::queue<Point> toVisit;
+    toVisit.push(start);
+    std::unordered_set<Point, PointHash>visited;
+    while (!toVisit.empty()) {
+        Point current = toVisit.front();
+        toVisit.pop();
+        visited.insert(current);
+
+        // 遍历当前棋子的邻居
+        for (const Point &direction : DIRECTIONS) {
+            Point neighbor = {current.x + direction.x, current.z + direction.z, current.layer + direction.layer};
+
+            // 如果邻居在网格中，且尚未访问过
+            if (Allchesses.find(neighbor) != Allchesses.end() && visited.find(neighbor) == visited.end()) {
+                toVisit.push(neighbor);
+            }
+        }
+    }
+    if (visited.size() == Allchesses.size()) {
+        return true;
+    }
+    return false;
 }
 
 void Chessboard::move_chess(cid id,Point target){
