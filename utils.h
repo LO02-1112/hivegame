@@ -44,5 +44,6 @@ struct single_line
     string str;
 };
 unordered_set<Point, PointHash> enum_nearby(Point p);
+unordered_set<Point, PointHash> enum_nearby(unordered_set<Point, PointHash> &ps);
 void set_minmax(int *min, int *max, int target);
 #endif

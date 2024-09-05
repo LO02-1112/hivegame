@@ -1,5 +1,6 @@
 #include "chess.h"
 #include "utils.h"
+
 using namespace std;
 
 bool Chess::can_move () {
@@ -10,5 +11,11 @@ graph Chess::to_graph(){
     string line13 = cha + "    " + cha;
     string line2 = "  " +pattern+ "  ";
     graph x = {id.player, line13,line2, line13}; // 1个emoji=2个字符位
+    return x;
+}
+
+unordered_map<char, Point> Beequeen::get_dest(Point origin, std::unordered_set<Point, PointHash> &Allchesses)
+{
+    unordered_map<char,Point> x;    
     return x;
 }

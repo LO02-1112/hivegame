@@ -24,5 +24,7 @@ public:
     void print(); // 输出棋盘
     bool isConnected(const Point& start);   //判断棋盘连通性
     bool bfs(const Point &start, std::unordered_set<Point, PointHash> &Allchesses);
+    std::unordered_set<Point, PointHash> enum_mov_dest(Point p);
+    // std::unordered_set<Point, PointHash> enum_set_position();
 };
 #endif

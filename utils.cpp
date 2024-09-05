@@ -58,7 +58,7 @@ unordered_set<Point, PointHash> enum_nearby(Point p)//枚举单个点
     return ret;
 }
 
-unordered_set<Point, PointHash> enum_nearby(unordered_set<Point, PointHash> ps)//枚举一组点
+unordered_set<Point, PointHash> enum_nearby(unordered_set<Point, PointHash>& ps)//枚举一组点,返回和这一组点相邻的所有点（已经排除它们本身）
 {
     unordered_set<Point, PointHash> ret;
     for (auto it = ps.begin(); it != ps.end(); ++it)
@@ -66,9 +66,10 @@ unordered_set<Point, PointHash> enum_nearby(unordered_set<Point, PointHash> ps)/
         auto x = enum_nearby(*it);
         set_union(ret.begin(), ret.end(),x.begin(), x.end(),inserter(ret, ret.begin()));        
     }
-    set_difference(ret.begin(), ret.end(),ps.begin(), ps.end(),inserter(ret, ret.begin()));
+    set_difference(ret.begin(), ret.end(),ps.begin(), ps.end(),inserter(ret, ret.begin()));//去除本身
     return ret;
 }
+
 void set_minmax(int *min, int *max, int target)
 {
     if (*min > target)

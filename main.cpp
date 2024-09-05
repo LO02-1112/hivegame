@@ -1,10 +1,28 @@
 #include <iostream>
 #include <windows.h>
 #include <memory>
+#include <algorithm>
 #include "utils.h"
 #include "chess.h"
 #include "chessboard.h"
 using namespace std;
+
+void input(int &x, int lb, int ub)
+{
+    do
+    {
+        cout << "请输入" << lb << "到" << ub << "之间的值：";
+        cin >> x;
+    } while (x < lb || x > ub);
+}
+void input(char &x, char lb, char ub)
+{
+    do
+    {
+        cout << "请输入" << lb << "到" << ub << "之间的值：";
+        cin >> x;
+    } while (x < lb || x > ub);
+}
 
 void test()
 {
@@ -24,15 +42,15 @@ void test()
     // x.add({1, -1},move(f));
     // x.add({0, 0}, move(g));
     x.print();
-    auto x2 = x;
+    auto temp_chessboard = x;
     auto s = enum_nearby({-1, 1,0}); 
-    x2.move_chess({2, 'b'}, {-1, 1, 0});
+    temp_chessboard.move_chess({2, 'b'}, {-1, 1, 0});
     for (auto it = s.begin(); it!=s.end();it++)
     {
-        x2.add(*it, make_shared<Chess>(-1, 's'));
+        temp_chessboard.add(*it, make_shared<Chess>(-1, 's'));
         // cout << it->x << it->z << endl;
     }
-    x2.print();
+    temp_chessboard.print();
 }
 
 class chess_for_deploy
@@ -44,8 +62,7 @@ public:
         int x;        
         cout<<"PLAYER "<<player<<"'s TURN"<<endl << "Choose:";
         cout << "1.beequeen:" << beequeen << "  2.spider:" << spider << "  3.grasshopper:" << grasshopper << "  4.beetle:" << beetle << "  5.ant:" << ant << endl;
-        cout << "enter: ";
-        cin >> x;
+        input(x, 0, 5);
         switch (x)
         {
         case 1:
@@ -87,60 +104,119 @@ void switch_player(int &p)
         p = 1;
 }
 
-void mian()
+
+int mian()
 {   
-    Chessboard x;
-    unordered_map<char,Point> cmap;
-    int playcfg,current_player=1;
-    chess_for_deploy c[2];
-    c[0].player = 1;
-    c[1].player = 2;
+    Chessboard main_chessboard;
+    unordered_map<char,Point> map4newchess;
+    int playcfg,round=2,current_player=1;
+    chess_for_deploy c[3];
+    c[1].player = 1;
+    c[2].player = 2;
     //cout << "PLAY WITH 1.HUMAN 2.AI" << endl;
     //cin >> playcfg;
     cout << "FIRST ROUND" << endl;
-    auto p = c[0].get_chess();
+    auto p = c[1].get_chess();
     while (p==nullptr)
     {
-        p = c[0].get_chess();
+        p = c[1].get_chess();
     }
-    x.add({0, 0, 0}, move(p));
-    auto x2 = x;
+    main_chessboard.add({0, 0, 0}, move(p));
+    auto temp_chessboard=new Chessboard ;
+    *temp_chessboard=main_chessboard;
     auto s = enum_nearby({0, 0, 0});
-    char a='a';
+    char char_id='a';
     for (auto it = s.begin(); it != s.end(); it++)
-    {        
-        x2.add(*it, make_shared<Chess>(-1,a));
-        cmap.insert({a, *it});
-        a++;
-    }
-    x2.print();
-    cout << "SECOND ROUND.PLAYER 2 "<<"ENTER POSITION: ";
-    char enter;
-    cin >> enter;    
-    while (enter<'a' || enter>=a)
     {
-        cout << "重新输入" << endl;
-        cin >> enter;
-    } 
-    p = c[1].get_chess();
+        temp_chessboard->add(*it, make_shared<Chess>(-1, char_id));
+        map4newchess.insert({char_id, *it});
+        char_id++;
+    }
+    temp_chessboard->print();
+    cout << "SECOND ROUND.PLAYER 2 "<<"ENTER POSITION: ";
+    delete temp_chessboard;
+    char enter_char;
+    input(enter_char, 'a', char_id);
+    p = c[2].get_chess();
     while (p == nullptr)
     {
-        p = c[1].get_chess();
-    }   
-    x.add(cmap[enter],p);
-    x.print();
+        p = c[2].get_chess();
+    }
+    main_chessboard.add(map4newchess[enter_char], p);
+    map4newchess.clear();
+    main_chessboard.print();
     //前2回合于此结束
+    /*
     //测试bfs
     x.add({0, 1, 0}, move(make_shared<Chess>(1, 'c')));
     cout << x.isConnected({-1,1,0})<<endl;
-    x.print();
+    x.print();*/
+    int otherplayer;
+    unordered_set<Point, PointHash> s1, s2, s3;
+    while(1)//2回合之后开始的循环逻辑
+    {
+        FLAG://用户取消操作
+        map4newchess.clear();
+        system("cls");
+        main_chessboard.print();
+        cout << "现在是玩家" << current_player << "的回合" << endl;
+        cout << "选项：0=弃权，1=摆放，2=移动" << endl;
+        input(enter_char, '0', '2');
+        switch (enter_char)
+        {
+        case '1':
+            s1 = main_chessboard.get_chess(current_player);
+            s1 = enum_nearby(s1);
+            if(current_player==1)
+            {
+                otherplayer = 2;
+            } 
+            else{
+                otherplayer = 1;
+            }
+            s2 = main_chessboard.get_chess(otherplayer);
+            s2 = enum_nearby(s2);
+            set_difference(s1.begin(), s1.end(), s2.begin(), s2.end(), inserter(s3, s3.begin()));//s1-s2
+            temp_chessboard = new Chessboard;
+            *temp_chessboard = main_chessboard;
+            char_id = 'a';
+            for (auto it = s3.begin(); it != s3.end();++it)
+            {
+                temp_chessboard->add(*it, move(make_shared<Chess>(-1, char_id)));
+                map4newchess.insert({char_id, *it});
+                char_id++;                
+            }
+            s3.clear();
+            system("cls");
+            temp_chessboard->print();
+            delete temp_chessboard;
+            input(enter_char,'a',char_id+1);
+            if (enter_char==char_id+1)
+            {
+                goto FLAG;
+            }
+            p = c[current_player].get_chess();
+            if (p == nullptr)
+            {
+                goto FLAG;
+            }
+            main_chessboard.add(map4newchess[enter_char],move(p));
+            break;
+        
+        default:
+            break;
+        }
+        switch_player(current_player);
+        round++;
+    }
+    return 1;
 }
 
 int main()
 {
     system("chcp 65001");
     system("cls");
-    mian();
+    while(mian());
     system("pause");
     return 0;
 }

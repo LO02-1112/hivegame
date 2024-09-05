@@ -58,7 +58,17 @@ std::unordered_set<Point, PointHash> Chessboard::get_chess(int i)
     }
     return ret;
 }
-bool Chessboard::isConnected(const Point& start){   //判断棋盘连通性
+
+std::unordered_set<Point, PointHash> Chessboard::enum_mov_dest(Point p)//列举‘蚂蚁’全部可能到达的位置（不考虑卡位）
+{
+    unordered_set<Point, PointHash> x = get_chess(0);
+    x.erase(p);
+    unordered_set<Point, PointHash> ret=enum_nearby(x);
+    return ret;
+}
+
+bool Chessboard::isConnected(const Point &start)
+{ // 判断棋盘连通性
     std::unordered_set<Point, PointHash> Allchesses = get_chess(0);
     Allchesses.erase(start);
     if (bfs(start, Allchesses)) {
@@ -88,6 +98,8 @@ bool Chessboard::bfs(const Point &start, std::unordered_set<Point, PointHash> &A
     }
     return false;
 }
+
+
 
 void Chessboard::move_chess(cid id,Point target){
     Point origin = id2pnt[id];
