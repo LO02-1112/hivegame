@@ -60,6 +60,7 @@ std::unordered_set<Point, PointHash> Chessboard::get_chess(int i)
 }
 bool Chessboard::isConnected(const Point& start){   //判断棋盘连通性
     std::unordered_set<Point, PointHash> Allchesses = get_chess(0);
+    Allchesses.erase(start);
     if (bfs(start, Allchesses)) {
         return true;
     }
