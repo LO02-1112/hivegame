@@ -51,14 +51,13 @@ bool areNeighbors(Point a, Point b)
 unordered_set<Point, PointHash> enum_nearby(Point p)//枚举单个点
 {
     unordered_set<Point,PointHash> ret;
-    ret.insert(p + Point{1, -1, 0});
-    ret.insert(p + Point{1, 0, 0});
-    ret.insert(p + Point{0, 1, 0});
-    ret.insert(p + Point{-1, 1, 0});
-    ret.insert(p + Point{-1, 0, 0});
-    ret.insert(p + Point{0, -1, 0});
+    for (const Point &direction : DIRECTIONS)
+    {
+        ret.insert(p + direction);        
+    }
     return ret;
 }
+
 unordered_set<Point, PointHash> enum_nearby(unordered_set<Point, PointHash> ps)//枚举一组点
 {
     unordered_set<Point, PointHash> ret;
@@ -81,4 +80,3 @@ void set_minmax(int *min, int *max, int target)
         *max = target;
     }
 }
-
