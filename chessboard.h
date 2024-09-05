@@ -6,8 +6,11 @@
 #include "chess.h"
 #include "printer.h"
 #include <map>
+#include <stack>
+#include <queue>
 using namespace std;
 //每次添加棋子后会自动《扩展》棋盘，方便打印
+
 class Chessboard
 {
 public:
@@ -19,5 +22,7 @@ public:
     void move_chess(cid id, Point target);//移动棋子
     std::unordered_set<Point, PointHash> get_chess(int i);
     void print(); // 输出棋盘
+    bool isConnected(const Point& start);   //判断棋盘连通性
+    bool bfs(const Point &start, std::unordered_set<Point, PointHash> &Allchesses);
 };
 #endif

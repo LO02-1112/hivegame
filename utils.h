@@ -1,7 +1,8 @@
 #ifndef UTILS_H
 #define UTILS_H
-#include<string>
+#include <string>
 #include <unordered_set>
+#include <vector>
 using namespace std;
 
 void SetConsoleColor(int textColor, int backgroundColor);
@@ -14,6 +15,10 @@ struct Point
     friend std::ostream& operator<<(ostream &os, const Point &c);
 };
 
+const std::vector<Point> DIRECTIONS = {
+    Point{1, -1, 0}, Point{1, 0, 0}, Point{0, 1, 0},
+    Point{-1, 1, 0}, Point{-1, 0, 0}, Point{0, -1, 0}
+};
 
 struct PointHash
 {
