@@ -130,8 +130,9 @@ void mian()
     x.add(cmap[enter],p);
     x.print();
     //前2回合于此结束
+    //测试bfs
     x.add({0, 1, 0}, move(make_shared<Chess>(1, 'c')));
-    cout << x.isConnected({-1,1,0});
+    cout << x.isConnected({-1,1,0})<<endl;
     x.print();
 }
 
