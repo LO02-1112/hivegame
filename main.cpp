@@ -202,11 +202,13 @@ int mian()
             input(enter_char,'a',char_id);
             if (enter_char==char_id)
             {
+                cout << "返回上一步..." << endl;
                 goto FLAG;
             }
             p = c[current_player].get_chess();
             if (p == nullptr)
             {
+                cout << "返回上一步..." << endl;
                 goto FLAG;
             }
             main_chessboard.add(map4newchess[enter_char],move(p));
