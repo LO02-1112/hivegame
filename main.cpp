@@ -200,7 +200,7 @@ int mian()
             temp_chessboard->print();
             delete temp_chessboard;
             input(enter_char,'a',char_id);
-            if (enter_char==char_id+1)
+            if (enter_char==char_id)
             {
                 goto FLAG;
             }
