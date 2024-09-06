@@ -14,7 +14,7 @@ graph Chess::to_graph(){
     return x;
 }
 
-unordered_map<char, Point> Beequeen::get_dest(Point origin, std::unordered_set<Point, PointHash> &Allchesses)
+unordered_map<char, Point> Beequeen::get_dest(Point origin, std::set<Point> &Allchesses)
 {
     unordered_map<char,Point> x;    
     return x;

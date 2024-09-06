@@ -20,11 +20,11 @@ public:
     int minx=0, maxx=0,minz=0, maxz=0;    
     void add(Point p, shared_ptr<Chess> i);// 添加棋子：坐标，棋子
     void move_chess(cid id, Point target);//移动棋子
-    std::unordered_set<Point, PointHash> get_chess(int i);
+    std::set<Point> get_chess(int i);
     void print(); // 输出棋盘
     bool isConnected(const Point& start);   //判断棋盘连通性
-    bool bfs(const Point &start, std::unordered_set<Point, PointHash> &Allchesses);
-    std::unordered_set<Point, PointHash> enum_mov_dest(Point p);
-    // std::unordered_set<Point, PointHash> enum_set_position();
+    bool bfs(const Point &start, std::set<Point> &Allchesses);
+    std::set<Point> enum_mov_dest(Point p);
+    // std::set<Point> enum_set_position();
 };
 #endif

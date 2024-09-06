@@ -1,6 +1,6 @@
 #include <iostream>
 #include <vector>
-#include <unordered_set>
+#include <set>
 #include <windows.h>
 #include <memory>
 #include <algorithm>
@@ -48,9 +48,9 @@ bool areNeighbors(Point a, Point b)
     return (abs(a.x - b.x) + abs(y1 - y2) + abs(a.z - b.z)) == 2;
 }
 
-unordered_set<Point, PointHash> enum_nearby(Point p)//枚举单个点
+set<Point> enum_nearby(Point p)//枚举单个点
 {
-    unordered_set<Point,PointHash> ret;
+    set<Point> ret;
     for (const Point &direction : DIRECTIONS)
     {
         ret.insert(p + direction);        
@@ -58,9 +58,9 @@ unordered_set<Point, PointHash> enum_nearby(Point p)//枚举单个点
     return ret;
 }
 
-unordered_set<Point, PointHash> enum_nearby(unordered_set<Point, PointHash>& ps)//枚举一组点,返回和这一组点相邻的所有点（已经排除它们本身）
+set<Point> enum_nearby(set<Point>& ps)//枚举一组点,返回和这一组点相邻的所有点（已经排除它们本身）
 {
-    unordered_set<Point, PointHash> ret;
+    set<Point> ret;
     for (auto it = ps.begin(); it != ps.end(); ++it)
     {
         auto x = enum_nearby(*it);

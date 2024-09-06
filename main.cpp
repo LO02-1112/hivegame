@@ -56,7 +56,7 @@ void test()
 class chess_for_deploy
 {
 public:
-    int beequeen=1, spider=2, grasshopper=3,beetle=2,ant=3,player;char id = 'a';
+    int beequeen=1, spider=2, grasshopper=3,beetle=2,ant=3,player;char id = 'a'-1;
     shared_ptr<Chess> get_chess()
     {
         int x;        
@@ -157,7 +157,7 @@ int mian()
     cout << x.isConnected({-1,1,0})<<endl;
     x.print();*/
     int otherplayer;
-    unordered_set<Point, PointHash> s1, s2, s3;
+    set<Point> s1, s2, s3;
     while(1)//2回合之后开始的循环逻辑
     {
         FLAG://用户取消操作
@@ -170,6 +170,7 @@ int mian()
         switch (enter_char)
         {
         case '1':
+            s3.clear();
             s1 = main_chessboard.get_chess(current_player);
             s1 = enum_nearby(s1);
             if(current_player==1)
@@ -180,11 +181,13 @@ int mian()
                 otherplayer = 1;
             }
             s2 = main_chessboard.get_chess(otherplayer);
-            set_difference(s1.begin(), s1.end(), s2.begin(), s2.end(), inserter(s1, s1.begin()));
+            set_difference(s1.begin(), s1.end(), s2.begin(), s2.end(), inserter(s3, s3.begin()));
+            s1 = s3;
+            s3.clear();
             s2 = enum_nearby(s2);
             set_difference(s1.begin(), s1.end(), s2.begin(), s2.end(), inserter(s3, s3.begin()));//s1-s2
             temp_chessboard = new Chessboard;
-            *temp_chessboard = main_chessboard;
+            // *temp_chessboard = main_chessboard;
             char_id = 'a';
             for (auto it = s3.begin(); it != s3.end();++it)
             {
@@ -196,7 +199,7 @@ int mian()
             system("cls");
             temp_chessboard->print();
             delete temp_chessboard;
-            input(enter_char,'a',char_id+1);
+            input(enter_char,'a',char_id);
             if (enter_char==char_id+1)
             {
                 goto FLAG;

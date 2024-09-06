@@ -45,9 +45,9 @@ void Chessboard::print() { //输出棋盘
 }
 
 // 根据玩家号（0=全部,1,2），枚举全部的棋子，返回集合
-std::unordered_set<Point, PointHash> Chessboard::get_chess(int i)
+std::set<Point> Chessboard::get_chess(int i)
 {
-    unordered_set<Point, PointHash> ret;
+    set<Point> ret;
     for (auto it = id2pnt.begin(); it != id2pnt.end(); ++it)
     {
         if ((i != 0 && it->first.player != i) || it->second.layer!=0)//滤除上层棋子
@@ -59,27 +59,27 @@ std::unordered_set<Point, PointHash> Chessboard::get_chess(int i)
     return ret;
 }
 
-std::unordered_set<Point, PointHash> Chessboard::enum_mov_dest(Point p)//列举‘蚂蚁’全部可能到达的位置（不考虑卡位）
+std::set<Point> Chessboard::enum_mov_dest(Point p)//列举‘蚂蚁’全部可能到达的位置（不考虑卡位）
 {
-    unordered_set<Point, PointHash> x = get_chess(0);
+    set<Point> x = get_chess(0);
     x.erase(p);
-    unordered_set<Point, PointHash> ret=enum_nearby(x);
+    set<Point> ret=enum_nearby(x);
     return ret;
 }
 
 bool Chessboard::isConnected(const Point &start)
 { // 判断棋盘连通性
-    std::unordered_set<Point, PointHash> Allchesses = get_chess(0);
+    std::set<Point> Allchesses = get_chess(0);
     Allchesses.erase(start);
     if (bfs(start, Allchesses)) {
         return true;
     }
     return false;
 }
-bool Chessboard::bfs(const Point &start, std::unordered_set<Point, PointHash> &Allchesses) {
+bool Chessboard::bfs(const Point &start, std::set<Point> &Allchesses) {
     std::queue<Point> toVisit;
     toVisit.push(start);
-    std::unordered_set<Point, PointHash>visited;
+    std::set<Point>visited;
     while (!toVisit.empty()) {
         Point current = toVisit.front();
         toVisit.pop();

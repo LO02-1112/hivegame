@@ -45,7 +45,7 @@ class Beequeen:public Chess
 {
 public:
     Beequeen(int player, char idx) : Chess(player, idx,"🐝") {};
-    unordered_map<char, Point> get_dest(Point origin, std::unordered_set<Point, PointHash> &Allchesses);
+    unordered_map<char, Point> get_dest(Point origin, std::set<Point> &Allchesses);
 };
 
 //蚱蜢

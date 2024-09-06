@@ -1,7 +1,7 @@
 #ifndef UTILS_H
 #define UTILS_H
 #include <string>
-#include <unordered_set>
+#include <set>
 #include <vector>
 using namespace std;
 
@@ -43,7 +43,7 @@ struct single_line
     int color;
     string str;
 };
-unordered_set<Point, PointHash> enum_nearby(Point p);
-unordered_set<Point, PointHash> enum_nearby(unordered_set<Point, PointHash> &ps);
+set<Point> enum_nearby(Point p);
+set<Point> enum_nearby(set<Point> &ps);
 void set_minmax(int *min, int *max, int target);
 #endif
