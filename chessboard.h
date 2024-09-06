@@ -9,8 +9,8 @@
 #include <stack>
 #include <queue>
 using namespace std;
-//每次添加棋子后会自动《扩展》棋盘，方便打印
-
+class Chess;//前向声明
+// 每次添加棋子后会自动《扩展》棋盘，方便打印
 class Chessboard
 {
 public:
@@ -23,8 +23,9 @@ public:
     std::set<Point> get_chess(int i);
     void print(); // 输出棋盘
     bool isConnected(const Point& start);   //判断棋盘连通性
-    bool bfs(const Point &start, std::set<Point> &Allchesses);
+    bool bfs(std::set<Point> &Allchesses);
     std::set<Point> enum_mov_dest(Point p);
+    //void remove(cid id);
     // std::set<Point> enum_set_position();
 };
 #endif
