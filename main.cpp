@@ -69,26 +69,31 @@ public:
             if (beequeen==0)
                 return nullptr;
             beequeen--;
+            id++;
             return move(make_shared<Beequeen>(player, id));
         case 2:
             if (spider == 0)
                 return nullptr;
             spider--;
+            id++;
             return move(make_shared<Spider>(player, id));
         case 3:
             if (grasshopper == 0)
                 return nullptr;
             grasshopper--;
+            id++;
             return move(make_shared<Grasshopper>(player, id));
         case 4:
             if (beetle == 0)
                 return nullptr;
-            beequeen--;
+            beetle--;
+            id++;
             return move(make_shared<Beetle>(player, id));
         case 5:
             if (ant == 0)
                 return nullptr;
-            beequeen--;
+            ant--;
+            id++;
             return move(make_shared<Ant>(player, id));
         default:
             return nullptr;
@@ -175,6 +180,7 @@ int mian()
                 otherplayer = 1;
             }
             s2 = main_chessboard.get_chess(otherplayer);
+            set_difference(s1.begin(), s1.end(), s2.begin(), s2.end(), inserter(s1, s1.begin()));
             s2 = enum_nearby(s2);
             set_difference(s1.begin(), s1.end(), s2.begin(), s2.end(), inserter(s3, s3.begin()));//s1-s2
             temp_chessboard = new Chessboard;
