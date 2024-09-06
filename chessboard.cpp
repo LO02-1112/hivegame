@@ -64,20 +64,22 @@ std::set<Point> Chessboard::enum_mov_dest(Point p)//列举‘蚂蚁’全部可�
     set<Point> x = get_chess(0);
     x.erase(p);
     set<Point> ret=enum_nearby(x);
+    ret.erase(p);
     return ret;
 }
 
-bool Chessboard::isConnected(const Point &start)
+bool Chessboard::isConnected(const Point &p)
 { // 判断棋盘连通性
     std::set<Point> Allchesses = get_chess(0);
-    Allchesses.erase(start);
-    if (bfs(start, Allchesses)) {
+    Allchesses.erase(p);
+    if (bfs(Allchesses)) {
         return true;
     }
     return false;
 }
-bool Chessboard::bfs(const Point &start, std::set<Point> &Allchesses) {
+bool Chessboard::bfs(std::set<Point> &Allchesses) {
     std::queue<Point> toVisit;
+    Point start = *(Allchesses.begin());
     toVisit.push(start);
     std::set<Point>visited;
     while (!toVisit.empty()) {
@@ -99,7 +101,13 @@ bool Chessboard::bfs(const Point &start, std::set<Point> &Allchesses) {
     return false;
 }
 
-
+// void Chessboard::remove(cid id)
+// { // 删除棋子，特殊调用
+//     Point ori_point = id2pnt[id];
+//     id2pnt.erase(id);
+//     auto it = board.find(ori_point);
+//     board.erase(it);
+// }
 
 void Chessboard::move_chess(cid id,Point target){
     Point origin = id2pnt[id];

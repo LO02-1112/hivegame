@@ -8,6 +8,29 @@ using namespace std;
 void SetConsoleColor(int textColor, int backgroundColor);
 void SetInfoColor(int player=0);
 
+struct cid
+{
+    int player;
+    char id;
+    bool operator<(const cid &other) const
+    {
+        if (player != other.player)
+            return player < other.player;
+        return id < other.id;
+    }
+    bool operator==(const cid &other) const
+    {
+        return player == other.player && id == other.id;
+    }
+};
+struct cidHash
+{
+    std::size_t operator()(const cid &p) const
+    {
+        return std::hash<int>()(p.player) ^ (std::hash<int>()(p.id) << 1);
+    }
+};
+
 struct Point
 {
     int x, z,layer;

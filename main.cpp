@@ -56,7 +56,7 @@ void test()
 class chess_for_deploy
 {
 public:
-    int beequeen=1, spider=2, grasshopper=3,beetle=2,ant=3,player;char id = 'a'-1;
+    int beequeen=100, spider=2, grasshopper=3,beetle=2,ant=3,player;char id = 'a'-1;
     shared_ptr<Chess> deploy_chess()
     {
         int x;
@@ -168,6 +168,8 @@ int mian()
     cout << x.isConnected({-1,1,0})<<endl;
     x.print();*/
     int otherplayer;
+    Point temp_point;
+    cid temp_cid;
     set<Point> s1, s2, s3;
     while(1)//2回合之后开始的循环逻辑
     {
@@ -228,7 +230,48 @@ int mian()
             }
             main_chessboard.add(map4newchess[enter_char],move(p));
             break;
-        
+        case '2':
+            SetInfoColor(current_player);
+            cout << "请输入移动的棋子的字母：";
+            cin >> enter_char;
+            temp_cid = {current_player, enter_char};
+            if (main_chessboard.id2pnt.count(temp_cid)==0)
+            {
+                cout << "无效的操作，返回上一步..." << endl;
+                system("pause");
+                continue;
+            }            
+            temp_point = main_chessboard.id2pnt[temp_cid];
+            s3 = main_chessboard.board[temp_point]->get_dest(temp_cid,main_chessboard);
+            if (s3.empty())
+            {
+                cout << "棋子没有可走的目标格子，返回上一步..." << endl;
+                system("pause");
+                continue;
+            }
+            SetInfoColor();
+            temp_chessboard = new Chessboard;
+            *temp_chessboard = main_chessboard;
+            char_id = 'a';
+            for (auto it = s3.begin(); it != s3.end(); ++it)
+            {
+                temp_chessboard->add(*it, move(make_shared<Chess>(-1, char_id)));
+                map4newchess.insert({char_id, *it});
+                char_id++;
+            }
+            temp_chessboard->print();
+            SetInfoColor(current_player);
+            input(enter_char, 'a', char_id);
+            SetInfoColor();
+            if (enter_char == char_id)
+            {
+                cout << "无效的操作，返回上一步..." << endl;
+                system("pause");
+                continue;
+            }
+            main_chessboard.move_chess(temp_cid, map4newchess[enter_char]);
+            break;
+
         default:
             break;
         }

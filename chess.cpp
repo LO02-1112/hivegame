@@ -1,6 +1,7 @@
 #include "chess.h"
 #include "utils.h"
-
+#include <iostream>
+#include "chessboard.h"
 using namespace std;
 
 bool Chess::can_move () {
@@ -14,8 +15,31 @@ graph Chess::to_graph(){
     return x;
 }
 
-unordered_map<char, Point> Beequeen::get_dest(Point origin, std::set<Point> &Allchesses)
+set<Point> Chess::get_dest(cid id, Chessboard &chessboard) const
 {
-    unordered_map<char,Point> x;    
-    return x;
+    set<Point> r;
+    return r;
+}
+
+set<Point> Beequeen::get_dest(cid id, Chessboard& chessboard ) const 
+{
+    set<Point> dest,x,t,ret;
+    Point ori = chessboard.id2pnt[id];
+    if (!chessboard.isConnected (ori))
+    {
+        std::cout << "not connected"<<endl;
+        return ret;
+    }
+    t = chessboard.enum_mov_dest(ori);
+    dest = t*enum_nearby(ori);
+    ret = dest;
+    for (auto it = dest.begin(); it != dest.end();++it)
+    {
+        x = enum_nearby(*it) - t;
+        if ((x - chessboard.get_chess(0)).empty())
+        {
+            ret.erase(*it);
+        }
+    }
+    return dest;
 }
