@@ -57,12 +57,13 @@ class chess_for_deploy
 {
 public:
     int beequeen=1, spider=2, grasshopper=3,beetle=2,ant=3,player;char id = 'a'-1;
-    shared_ptr<Chess> get_chess()
+    shared_ptr<Chess> deploy_chess()
     {
         int x;        
         cout<<"PLAYER "<<player<<"'s TURN"<<endl << "Choose:";
         cout << "1.beequeen:" << beequeen << "  2.spider:" << spider << "  3.grasshopper:" << grasshopper << "  4.beetle:" << beetle << "  5.ant:" << ant << endl;
-        input(x, 0, 5);
+        cout << "请选择棋子: ";
+        cin>>x;
         switch (x)
         {
         case 1:
@@ -121,10 +122,10 @@ int mian()
     //cout << "PLAY WITH 1.HUMAN 2.AI" << endl;
     //cin >> playcfg;
     cout << "FIRST ROUND" << endl;
-    auto p = c[1].get_chess();
+    auto p = c[1].deploy_chess();
     while (p==nullptr)
     {
-        p = c[1].get_chess();
+        p = c[1].deploy_chess();
     }
     main_chessboard.add({0, 0, 0}, move(p));
     auto temp_chessboard=new Chessboard ;
@@ -142,10 +143,10 @@ int mian()
     delete temp_chessboard;
     char enter_char;
     input(enter_char, 'a', char_id);
-    p = c[2].get_chess();
+    p = c[2].deploy_chess();
     while (p == nullptr)
     {
-        p = c[2].get_chess();
+        p = c[2].deploy_chess();
     }
     main_chessboard.add(map4newchess[enter_char], p);
     map4newchess.clear();
@@ -202,14 +203,16 @@ int mian()
             input(enter_char,'a',char_id);
             if (enter_char==char_id)
             {
-                cout << "返回上一步..." << endl;
-                goto FLAG;
+                cout << "无效的操作，返回上一步..." << endl;
+                system("pause");
+                continue;
             }
-            p = c[current_player].get_chess();
+            p = c[current_player].deploy_chess();
             if (p == nullptr)
             {
-                cout << "返回上一步..." << endl;
-                goto FLAG;
+                cout << "无效的操作，返回上一步..." << endl;
+                system("pause");
+                continue;
             }
             main_chessboard.add(map4newchess[enter_char],move(p));
             break;
