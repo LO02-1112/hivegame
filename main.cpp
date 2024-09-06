@@ -187,7 +187,7 @@ int mian()
             s2 = enum_nearby(s2);
             set_difference(s1.begin(), s1.end(), s2.begin(), s2.end(), inserter(s3, s3.begin()));//s1-s2
             temp_chessboard = new Chessboard;
-            // *temp_chessboard = main_chessboard;
+            *temp_chessboard = main_chessboard;
             char_id = 'a';
             for (auto it = s3.begin(); it != s3.end();++it)
             {
