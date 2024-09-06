@@ -161,7 +161,7 @@ int mian()
     set<Point> s1, s2, s3;
     while(1)//2回合之后开始的循环逻辑
     {
-        FLAG://用户取消操作
+        //FLAG://用户取消操作
         map4newchess.clear();
         system("cls");
         main_chessboard.print();
@@ -182,11 +182,9 @@ int mian()
                 otherplayer = 1;
             }
             s2 = main_chessboard.get_chess(otherplayer);
-            set_difference(s1.begin(), s1.end(), s2.begin(), s2.end(), inserter(s3, s3.begin()));
-            s1 = s3;
-            s3.clear();
+            s1 = s1 - s2;
             s2 = enum_nearby(s2);
-            set_difference(s1.begin(), s1.end(), s2.begin(), s2.end(), inserter(s3, s3.begin()));//s1-s2
+            s3 = s1 - s2;
             temp_chessboard = new Chessboard;
             *temp_chessboard = main_chessboard;
             char_id = 'a';

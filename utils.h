@@ -6,7 +6,6 @@
 using namespace std;
 
 void SetConsoleColor(int textColor, int backgroundColor);
-
 struct Point
 {
     int x, z,layer;
@@ -15,6 +14,10 @@ struct Point
     Point operator+(const Point &other) const;
     friend std::ostream &operator<<(ostream &os, const Point &c);
 };
+
+std::set<Point> operator-(const std::set<Point> &set1, const std::set<Point> &set2);
+std::set<Point> operator+(const std::set<Point> &set1, const std::set<Point> &set2);
+std::set<Point> operator*(const std::set<Point> &set1, const std::set<Point> &set2);
 
 const std::vector<Point> DIRECTIONS = {
     Point{1, -1, 0}, Point{1, 0, 0}, Point{0, 1, 0},
