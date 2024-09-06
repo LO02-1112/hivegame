@@ -14,6 +14,7 @@ void Printer::add(graph x) {
     line3.push_back(a);
 }
 
+//修改玩家棋子的颜色
 void Printer::set_color(int color) {
     if (color == -1) {
         SetConsoleColor(WHITE, BLACK);

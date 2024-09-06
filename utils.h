@@ -6,6 +6,8 @@
 using namespace std;
 
 void SetConsoleColor(int textColor, int backgroundColor);
+void SetInfoColor(int player=0);
+
 struct Point
 {
     int x, z,layer;

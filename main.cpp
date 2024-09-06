@@ -59,10 +59,16 @@ public:
     int beequeen=1, spider=2, grasshopper=3,beetle=2,ant=3,player;char id = 'a'-1;
     shared_ptr<Chess> deploy_chess()
     {
-        int x;        
-        cout<<"PLAYER "<<player<<"'s TURN"<<endl << "Choose:";
-        cout << "1.beequeen:" << beequeen << "  2.spider:" << spider << "  3.grasshopper:" << grasshopper << "  4.beetle:" << beetle << "  5.ant:" << ant << endl;
+        int x;
+        SetInfoColor(player);
+        cout << "Player "<<player<<"'s Turn"<<endl;
+        cout << "1.beequeen:" << beequeen;
+        cout << "  2.spider:"<< spider;
+        cout << "  3.grasshopper:" << grasshopper;
+        cout << "  4.beetle:" << beetle;
+        cout << "  5.ant:" << ant << endl;
         cout << "请选择棋子: ";
+        SetInfoColor();
         cin>>x;
         switch (x)
         {
@@ -121,12 +127,14 @@ int mian()
     c[2].player = 2;
     //cout << "PLAY WITH 1.HUMAN 2.AI" << endl;
     //cin >> playcfg;
-    cout << "FIRST ROUND" << endl;
+    SetInfoColor(1);
+    cout << "第一轮" << endl;
     auto p = c[1].deploy_chess();
     while (p==nullptr)
     {
         p = c[1].deploy_chess();
     }
+    SetInfoColor();
     main_chessboard.add({0, 0, 0}, move(p));
     auto temp_chessboard=new Chessboard ;
     *temp_chessboard=main_chessboard;
@@ -139,7 +147,8 @@ int mian()
         char_id++;
     }
     temp_chessboard->print();
-    cout << "SECOND ROUND.PLAYER 2 "<<"ENTER POSITION: ";
+    SetInfoColor(2);
+    cout << "第二轮 玩家2 请选择摆放棋子的位置: ";
     delete temp_chessboard;
     char enter_char;
     input(enter_char, 'a', char_id);
@@ -148,6 +157,7 @@ int mian()
     {
         p = c[2].deploy_chess();
     }
+    SetInfoColor();
     main_chessboard.add(map4newchess[enter_char], p);
     map4newchess.clear();
     main_chessboard.print();
@@ -165,9 +175,11 @@ int mian()
         map4newchess.clear();
         system("cls");
         main_chessboard.print();
+        SetInfoColor(current_player);
         cout << "现在是玩家" << current_player << "的回合" << endl;
         cout << "选项：0=弃权，1=摆放，2=移动" << endl;
         input(enter_char, '0', '2');
+        SetInfoColor();
         switch (enter_char)
         {
         case '1':
@@ -198,7 +210,9 @@ int mian()
             system("cls");
             temp_chessboard->print();
             delete temp_chessboard;
+            SetInfoColor(current_player);
             input(enter_char,'a',char_id);
+            SetInfoColor();
             if (enter_char==char_id)
             {
                 cout << "无效的操作，返回上一步..." << endl;

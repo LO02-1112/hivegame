@@ -17,6 +17,21 @@ void SetConsoleColor(int textColor, int backgroundColor = BLACK) {
     SetConsoleTextAttribute(hConsole, (backgroundColor << 4) | textColor);
 }
 
+//修改玩家操作提示的颜色
+void SetInfoColor(int player){
+    switch (player)
+    {
+    case 1:
+        SetConsoleColor(BRIGHT_YELLOW, BLACK);
+        break;
+    case 2:
+        SetConsoleColor(BRIGHT_RED, BLACK);
+        break;
+    default:
+        SetConsoleColor(WHITE, BLACK);
+    }
+}
+
 bool Point::operator==(const Point &other) const {
     return x == other.x && z == other.z && layer == other.layer;
 }
