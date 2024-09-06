@@ -17,6 +17,21 @@ void SetConsoleColor(int textColor, int backgroundColor = BLACK) {
     SetConsoleTextAttribute(hConsole, (backgroundColor << 4) | textColor);
 }
 
+//修改玩家操作提示的颜色
+void SetInfoColor(int player){
+    switch (player)
+    {
+    case 1:
+        SetConsoleColor(BRIGHT_YELLOW, BLACK);
+        break;
+    case 2:
+        SetConsoleColor(BRIGHT_RED, BLACK);
+        break;
+    default:
+        SetConsoleColor(WHITE, BLACK);
+    }
+}
+
 bool Point::operator==(const Point &other) const {
     return x == other.x && z == other.z && layer == other.layer;
 }
@@ -48,6 +63,27 @@ bool areNeighbors(Point a, Point b)
     return (abs(a.x - b.x) + abs(y1 - y2) + abs(a.z - b.z)) == 2;
 }
 
+std::set<Point> operator-(const std::set<Point> &set1, const std::set<Point> &set2)//重载差集运算
+{
+    set<Point> ret;
+    set_difference(set1.begin(), set1.end(), set2.begin(), set2.end(), inserter(ret, ret.begin()));
+    return ret;
+}
+
+std::set<Point> operator+(const std::set<Point> &set1, const std::set<Point> &set2) // 重载并集运算
+{
+    set<Point> ret;
+    set_union(set1.begin(), set1.end(), set2.begin(), set2.end(), inserter(ret, ret.begin()));
+    return ret;
+}
+
+std::set<Point> operator*(const std::set<Point> &set1, const std::set<Point> &set2) // 重载交集运算
+{
+    set<Point> ret;
+    set_intersection(set1.begin(), set1.end(), set2.begin(), set2.end(), inserter(ret, ret.begin()));
+    return ret;
+}
+
 set<Point> enum_nearby(Point p)//枚举单个点
 {
     set<Point> ret;
@@ -60,13 +96,13 @@ set<Point> enum_nearby(Point p)//枚举单个点
 
 set<Point> enum_nearby(set<Point>& ps)//枚举一组点,返回和这一组点相邻的所有点（已经排除它们本身）
 {
-    set<Point> ret,temp;
+    set<Point> ret;
     for (auto it = ps.begin(); it != ps.end(); ++it)
     {
         auto x = enum_nearby(*it);
-        set_union(temp.begin(), temp.end(),x.begin(), x.end(),inserter(temp, temp.begin()));//并集
+        ret=ret+x;
     }
-    set_difference(temp.begin(), temp.end(),ps.begin(), ps.end(),inserter(ret, ret.begin()));//去除本身
+    ret=ret-ps;//去除本身
     return ret;
 }
 
