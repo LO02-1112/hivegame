@@ -43,4 +43,5 @@ void Printer::print() {
     line1.clear();
     line2.clear();
     line3.clear();
+    set_color(-1);
 }

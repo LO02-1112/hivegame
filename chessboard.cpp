@@ -45,12 +45,12 @@ void Chessboard::print() { //输出棋盘
 }
 
 // 根据玩家号（0=全部,1,2），枚举全部的棋子，返回集合
-std::unordered_set<Point, PointHash> Chessboard::get_chess(int i)
+std::set<Point> Chessboard::get_chess(int i)
 {
-    unordered_set<Point, PointHash> ret;
+    set<Point> ret;
     for (auto it = id2pnt.begin(); it != id2pnt.end(); ++it)
     {
-        if (i!=0&&it->first.player!= i)
+        if ((i != 0 && it->first.player != i) || it->second.layer!=0)//滤除上层棋子
         {
             continue;
         }
@@ -58,27 +58,35 @@ std::unordered_set<Point, PointHash> Chessboard::get_chess(int i)
     }
     return ret;
 }
-bool Chessboard::isConnected(const Point& start){   //判断棋盘连通性
-    std::unordered_set<Point, PointHash> Allchesses = get_chess(0);
+
+std::set<Point> Chessboard::enum_mov_dest(Point p)//列举‘蚂蚁’全部可能到达的位置（不考虑卡位）
+{
+    set<Point> x = get_chess(0);
+    x.erase(p);
+    set<Point> ret=enum_nearby(x);
+    return ret;
+}
+
+bool Chessboard::isConnected(const Point &start)
+{ // 判断棋盘连通性
+    std::set<Point> Allchesses = get_chess(0);
     Allchesses.erase(start);
     if (bfs(start, Allchesses)) {
         return true;
     }
     return false;
 }
-bool Chessboard::bfs(const Point &start, std::unordered_set<Point, PointHash> &Allchesses) {
+bool Chessboard::bfs(const Point &start, std::set<Point> &Allchesses) {
     std::queue<Point> toVisit;
     toVisit.push(start);
-    std::unordered_set<Point, PointHash>visited;
+    std::set<Point>visited;
     while (!toVisit.empty()) {
         Point current = toVisit.front();
         toVisit.pop();
         visited.insert(current);
-
         // 遍历当前棋子的邻居
         for (const Point &direction : DIRECTIONS) {
-            Point neighbor = {current.x + direction.x, current.z + direction.z, current.layer + direction.layer};
-
+            Point neighbor = {current+direction};
             // 如果邻居在网格中，且尚未访问过
             if (Allchesses.find(neighbor) != Allchesses.end() && visited.find(neighbor) == visited.end()) {
                 toVisit.push(neighbor);
@@ -90,6 +98,8 @@ bool Chessboard::bfs(const Point &start, std::unordered_set<Point, PointHash> &A
     }
     return false;
 }
+
+
 
 void Chessboard::move_chess(cid id,Point target){
     Point origin = id2pnt[id];

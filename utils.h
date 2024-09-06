@@ -1,7 +1,7 @@
 #ifndef UTILS_H
 #define UTILS_H
 #include <string>
-#include <unordered_set>
+#include <set>
 #include <vector>
 using namespace std;
 
@@ -12,7 +12,8 @@ struct Point
     int x, z,layer;
     bool operator==(const Point &other) const;
     bool operator<(const Point &other) const;
-    friend std::ostream& operator<<(ostream &os, const Point &c);
+    Point operator+(const Point &other) const;
+    friend std::ostream &operator<<(ostream &os, const Point &c);
 };
 
 const std::vector<Point> DIRECTIONS = {
@@ -42,6 +43,7 @@ struct single_line
     int color;
     string str;
 };
-unordered_set<Point, PointHash> enum_nearby(Point p);
+set<Point> enum_nearby(Point p);
+set<Point> enum_nearby(set<Point> &ps);
 void set_minmax(int *min, int *max, int target);
 #endif

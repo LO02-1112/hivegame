@@ -1,6 +1,7 @@
 #ifndef CHESS_H
 #define CHESS_H
 #include "utils.h"
+#include <unordered_map>
 //🦟🦗🐜🐝🪲🐞🕷️
 
 //棋子的ID:玩家1/2，小写字母id（绑定键盘）
@@ -44,6 +45,7 @@ class Beequeen:public Chess
 {
 public:
     Beequeen(int player, char idx) : Chess(player, idx,"🐝") {};
+    unordered_map<char, Point> get_dest(Point origin, std::set<Point> &Allchesses);
 };
 
 //蚱蜢

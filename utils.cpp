@@ -1,6 +1,6 @@
 #include <iostream>
 #include <vector>
-#include <unordered_set>
+#include <set>
 #include <windows.h>
 #include <memory>
 #include <algorithm>
@@ -30,8 +30,11 @@ bool Point::operator<(const Point &other) const {
     }
     return layer < other.layer;
 }
+Point Point:: operator+(const Point &other) const{
+    return {x+other.x,z+other.z,layer+other.layer};
+}
 
-std::ostream& operator<<(std::ostream& os, const Point& p)
+std::ostream &operator<<(std::ostream &os, const Point &p)
 {
     os << "x=" << p.x << "z=" << p.z << endl;
     return os;
@@ -45,32 +48,28 @@ bool areNeighbors(Point a, Point b)
     return (abs(a.x - b.x) + abs(y1 - y2) + abs(a.z - b.z)) == 2;
 }
 
-unordered_set<Point, PointHash> enum_nearby(Point p)//枚举单个点
+set<Point> enum_nearby(Point p)//枚举单个点
 {
-    unordered_set<Point,PointHash> ret;
-    for (int z = -1; z <= 1; z++)
+    set<Point> ret;
+    for (const Point &direction : DIRECTIONS)
     {
-        for (int x = -1; x <= 1; x++)
-        {
-            if (x!=z)
-            {
-                ret.insert({p.x + x, p.z+z, p.layer});
-            }
-        }
+        ret.insert(p + direction);        
     }
     return ret;
 }
-unordered_set<Point, PointHash> enum_nearby(unordered_set<Point, PointHash> ps)//枚举一组点
+
+set<Point> enum_nearby(set<Point>& ps)//枚举一组点,返回和这一组点相邻的所有点（已经排除它们本身）
 {
-    unordered_set<Point, PointHash> ret;
+    set<Point> ret,temp;
     for (auto it = ps.begin(); it != ps.end(); ++it)
     {
         auto x = enum_nearby(*it);
-        set_union(ret.begin(), ret.end(),x.begin(), x.end(),inserter(ret, ret.begin()));        
+        set_union(temp.begin(), temp.end(),x.begin(), x.end(),inserter(temp, temp.begin()));//并集
     }
-    set_difference(ret.begin(), ret.end(),ps.begin(), ps.end(),inserter(ret, ret.begin()));
+    set_difference(temp.begin(), temp.end(),ps.begin(), ps.end(),inserter(ret, ret.begin()));//去除本身
     return ret;
 }
+
 void set_minmax(int *min, int *max, int target)
 {
     if (*min > target)
@@ -82,4 +81,3 @@ void set_minmax(int *min, int *max, int target)
         *max = target;
     }
 }
-
