@@ -66,6 +66,11 @@ set<Point> Beequeen::get_dest(cid id, Chessboard& chessboard ) const
 {
     set<Point> range, allchesses;
     Point ori = chessboard.id2pnt[id];
+    if (!chessboard.isConnected(ori))
+    {
+        std::cout << "not connected" << endl;
+        return range;
+    }
     range = chessboard.enum_mov_dest(ori);
     allchesses = chessboard.get_chess(0);
     allchesses.erase(ori);
@@ -75,6 +80,11 @@ set<Point> Spider::get_dest(cid id, Chessboard &chessboard) const
 {
     set<Point> range,allchesses;
     Point ori = chessboard.id2pnt[id];
+    if (!chessboard.isConnected(ori))
+    {
+        std::cout << "not connected" << endl;
+        return range;
+    }
     range = chessboard.enum_mov_dest(ori);
     allchesses = chessboard.get_chess(0);
     allchesses.erase(ori);
@@ -84,6 +94,11 @@ set<Point> Ant::get_dest(cid id, Chessboard &chessboard) const
 {
     set<Point> range,allchesses;
     Point ori = chessboard.id2pnt[id];
+    if (!chessboard.isConnected(ori))
+    {
+        std::cout << "not connected" << endl;
+        return range;
+    }
     range = chessboard.enum_mov_dest(ori);
     allchesses = chessboard.get_chess(0);
     allchesses.erase(ori);
