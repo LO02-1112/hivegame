@@ -4,7 +4,7 @@
 #include "chessboard.h"
 using namespace std;
 
-std::set<Point> diffusion(Point ori,set<Point>& range,int radius)//我命名为扩散算法，依次枚举可到位置，蜂王把半径设为1，蜘蛛3，蚂蚁0（代表无限）
+std::set<Point> diffusion(Point ori, set<Point> &range, set<Point> &all_chesses, int radius) // 我命名为扩散算法，依次枚举可到位置，蜂王把半径设为1，蜘蛛3，蚂蚁0（代表无限）
 {
     int round = 0;
     set<Point> previous, current, next, x, ret;
@@ -12,30 +12,32 @@ std::set<Point> diffusion(Point ori,set<Point>& range,int radius)//我命名为�
     current = previous;
     while (true)
     {
-        next = range * enum_nearby(current);
-        next=next-previous;
-        ret = ret + next;
-        for (auto it = next.begin(); it != next.end(); ++it)
+        for (auto it = current.begin(); it != current.end();++it)//逐个枚举
         {
-            x = enum_nearby(*it) - range;
-            if ((x - range).empty())
+            x = (enum_nearby(*it)*range)-previous;
+            for (auto it2 = x.begin(); it2 != x.end(); ++it2)
             {
-                next.erase(it);
-                ret.erase(*it);
-            }            
+                if (!((enum_nearby(*it)*enum_nearby(*it2))-all_chesses).empty())
+                {
+                    next.insert(*it2);
+                }
+            }
         }
-        previous = current;
-        current = next;
-        
         round++;
-        if(radius!=0&&round==radius)
+        if(radius==0)
+        {
+            ret = ret + next;
+        }
+        if (radius != 0 && round == radius)
+        {
+            return next;
+        }
+        if(radius==0&&(next-previous).empty())
         {
             return ret;
-        }
-        if(radius==0&&(next*range).empty())
-        {
-            return ret;
-        }
+        }        
+        previous = current;
+        current = next;        
         next.clear();
     }
     
@@ -62,8 +64,28 @@ set<Point> Chess::get_dest(cid id, Chessboard &chessboard) const
 
 set<Point> Beequeen::get_dest(cid id, Chessboard& chessboard ) const 
 {
-    set<Point> range;
-    Point ori = chessboard.id2pnt[id]; 
+    set<Point> range, allchesses;
+    Point ori = chessboard.id2pnt[id];
     range = chessboard.enum_mov_dest(ori);
-    return diffusion(ori, range, 1);
+    allchesses = chessboard.get_chess(0);
+    allchesses.erase(ori);
+    return diffusion(ori, range, allchesses, 1);
+}
+set<Point> Spider::get_dest(cid id, Chessboard &chessboard) const
+{
+    set<Point> range,allchesses;
+    Point ori = chessboard.id2pnt[id];
+    range = chessboard.enum_mov_dest(ori);
+    allchesses = chessboard.get_chess(0);
+    allchesses.erase(ori);
+    return diffusion(ori, range,allchesses, 3);
+}
+set<Point> Ant::get_dest(cid id, Chessboard &chessboard) const
+{
+    set<Point> range,allchesses;
+    Point ori = chessboard.id2pnt[id];
+    range = chessboard.enum_mov_dest(ori);
+    allchesses = chessboard.get_chess(0);
+    allchesses.erase(ori);
+    return diffusion(ori, range, allchesses, 0);
 }

@@ -41,6 +41,7 @@ class Ant : public Chess
 {
 public:
     Ant(int player, char idx) : Chess(player, idx, "🐜") {};
+    set<Point> get_dest(cid id, Chessboard &chessboard) const;
 };
 
 //甲虫
@@ -55,6 +56,7 @@ class Spider : public Chess
 {
 public:
     Spider(int player, char idx) : Chess(player, idx, "🕷️") {};
+    set<Point> get_dest(cid id, Chessboard &chessboard) const;
 };
 
 #endif
