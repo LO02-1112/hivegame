@@ -56,7 +56,7 @@ void test()
 class chess_for_deploy
 {
 public:
-    int beequeen=1, spider=2, grasshopper=3,beetle=2,ant=99,player;char id = 'A'-1;
+    int beequeen=1, spider=2, grasshopper=3,beetle=2,ant=3,player;char id = 'A'-1;
     shared_ptr<Chess> deploy_chess()
     {
         int x;
