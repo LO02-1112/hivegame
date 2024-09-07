@@ -118,3 +118,9 @@ void Chessboard::move_chess(cid id,Point target){
     set_minmax(&minz, &maxz, target.z);
     board.erase(it);
 }
+
+bool Chessboard::check_upper(Point p)//有压在上方的棋子时返回True
+{
+    p.layer++;
+    return (board.count(p) > 0);
+}

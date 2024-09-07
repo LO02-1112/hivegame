@@ -64,6 +64,11 @@ set<Point> Beequeen::get_dest(cid id, Chessboard& chessboard ) const
 {
     set<Point> range, allchesses;
     Point ori = chessboard.id2pnt[id];
+    if (chessboard.check_upper(ori))
+    {
+        cout << "你不能控制被压住的棋子..." << endl;
+        return range;
+    }
     if (!chessboard.isConnected(ori))
     {
         std::cout << "not connected" << endl;
@@ -78,6 +83,11 @@ set<Point> Spider::get_dest(cid id, Chessboard &chessboard) const
 {
     set<Point> range,allchesses;
     Point ori = chessboard.id2pnt[id];
+    if (chessboard.check_upper(ori))
+    {
+        cout << "你不能控制被压住的棋子..." << endl;
+        return range;
+    }
     if (!chessboard.isConnected(ori))
     {
         std::cout << "not connected" << endl;
@@ -92,6 +102,11 @@ set<Point> Ant::get_dest(cid id, Chessboard &chessboard) const
 {
     set<Point> range,allchesses;
     Point ori = chessboard.id2pnt[id];
+    if (chessboard.check_upper(ori))
+    {
+        cout << "你不能控制被压住的棋子..." << endl;
+        return range;
+    }
     if (!chessboard.isConnected(ori))
     {
         std::cout << "not connected" << endl;
@@ -107,7 +122,12 @@ set<Point> Grasshopper::get_dest(cid id, Chessboard &chessboard) const
 {
     set<Point> ret, allchesses;
     Point temp;
-    Point ori = chessboard.id2pnt[id];    
+    Point ori = chessboard.id2pnt[id];
+    if (chessboard.check_upper(ori))
+    {
+        cout << "你不能控制被压住的棋子..." << endl;
+        return ret;
+    }
     if (!chessboard.isConnected(ori))
     {
         std::cout << "not connected" << endl;
@@ -130,6 +150,11 @@ set<Point> Beetle::get_dest(cid id, Chessboard &chessboard) const
 {
     set<Point> ret, allchesses,range;
     Point ori = chessboard.id2pnt[id];
+    if (chessboard.check_upper(ori))
+    {
+        cout << "你不能控制被压住的棋子..." << endl;
+        return ret;
+    }
     ori.layer = 0;
     Point p;
     if (!chessboard.isConnected(ori))
