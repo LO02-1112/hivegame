@@ -4,7 +4,46 @@
 #include "chessboard.h"
 using namespace std;
 
-bool Chess::can_move () {
+std::set<Point> diffusion(Point ori,set<Point>& range,int radius)//我命名为扩散算法，依次枚举可到位置，蜂王把半径设为1，蜘蛛3，蚂蚁0（代表无限）
+{
+    int round = 0;
+    set<Point> previous, current, next, x, ret;
+    previous.insert(ori);
+    current = previous;
+    while (true)
+    {
+        next = range * enum_nearby(current);
+        next=next-previous;
+        ret = ret + next;
+        for (auto it = next.begin(); it != next.end(); ++it)
+        {
+            x = enum_nearby(*it) - range;
+            if ((x - range).empty())
+            {
+                next.erase(it);
+                ret.erase(*it);
+            }            
+        }
+        previous = current;
+        current = next;
+        
+        round++;
+        if(radius!=0&&round==radius)
+        {
+            return ret;
+        }
+        if(radius==0&&(next*range).empty())
+        {
+            return ret;
+        }
+        next.clear();
+    }
+    
+
+}
+
+bool Chess::can_move()
+{
     return false; // areConnected();
 }
 graph Chess::to_graph(){
@@ -23,23 +62,8 @@ set<Point> Chess::get_dest(cid id, Chessboard &chessboard) const
 
 set<Point> Beequeen::get_dest(cid id, Chessboard& chessboard ) const 
 {
-    set<Point> dest,x,t,ret;
-    Point ori = chessboard.id2pnt[id];
-    if (!chessboard.isConnected (ori))
-    {
-        std::cout << "not connected"<<endl;
-        return ret;
-    }
-    t = chessboard.enum_mov_dest(ori);
-    dest = t*enum_nearby(ori);
-    ret = dest;
-    for (auto it = dest.begin(); it != dest.end();++it)
-    {
-        x = enum_nearby(*it) - t;
-        if ((x - chessboard.get_chess(0)).empty())
-        {
-            ret.erase(*it);
-        }
-    }
-    return dest;
+    set<Point> range;
+    Point ori = chessboard.id2pnt[id]; 
+    range = chessboard.enum_mov_dest(ori);
+    return diffusion(ori, range, 1);
 }
