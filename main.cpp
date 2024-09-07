@@ -307,6 +307,7 @@ int mian()
                 char_id++;
             }
             temp_chessboard->print();
+            delete temp_chessboard;
             SetInfoColor(current_player);
             input(enter_char, 'A', char_id);
             SetInfoColor();
