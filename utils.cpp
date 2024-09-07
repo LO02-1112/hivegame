@@ -105,6 +105,16 @@ set<Point> enum_nearby(set<Point>& ps)//枚举一组点,返回和这一组点相
     ret=ret-ps;//去除本身
     return ret;
 }
+set<Point> enum_nearby_all(set<Point> &ps) // 枚举一组点,返回和这一组点相邻的所有点（包括它们本身）
+{
+    set<Point> ret;
+    for (auto it = ps.begin(); it != ps.end(); ++it)
+    {
+        auto x = enum_nearby(*it);
+        ret = ret + x;
+    }
+    return ret;
+}
 
 void set_minmax(int *min, int *max, int target)
 {

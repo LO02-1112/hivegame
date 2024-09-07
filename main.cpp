@@ -55,9 +55,36 @@ void test()
 
 class chess_for_deploy
 {
+private:
+    int beequeen=1, spider=2, grasshopper=3,beetle=2,ant=3;char id = 'A'-1;
+    char queenid;
 public:
-    int beequeen=1, spider=2, grasshopper=3,beetle=2,ant=3,player;char id = 'A'-1;
-    shared_ptr<Chess> deploy_chess()
+    int player;
+    bool queendeployed()
+    {
+        return beequeen == 0;
+    }
+    bool not_lose(Chessboard& chessboard)
+    {
+        if (beequeen!=0)
+        {
+            return true;
+        }
+        Point p = chessboard.id2pnt[{player, queenid}];
+        auto check = enum_nearby(p);
+        auto allchess = chessboard.get_chess(0);
+        for (auto it = check.begin(); it != check.end();++it)
+        {
+            if (allchess.count(* it)==0)
+            {
+                return true;
+            }
+        }
+        chessboard.print();
+        cout << "PLAYER " << player << " 的蜂王被包围了，输掉了游戏。" << endl;
+        return false;
+    }
+    shared_ptr<Chess> deploy_chess(int step)
     {
         int x;
         SetInfoColor(player);
@@ -70,6 +97,17 @@ public:
         cout << "请选择棋子: ";
         SetInfoColor();
         cin>>x;
+        if (step>=8&&beequeen!=0)
+        {
+            SetInfoColor(player);
+            cout << "你现在必须放置蜂王..."<<endl;
+            system("pause");
+            SetInfoColor();
+            beequeen--;
+            id++;
+            queenid = id;
+            return move(make_shared<Beequeen>(player, id));
+        }
         switch (x)
         {
         case 1:
@@ -77,6 +115,7 @@ public:
                 return nullptr;
             beequeen--;
             id++;
+            queenid = id;
             return move(make_shared<Beequeen>(player, id));
         case 2:
             if (spider == 0)
@@ -121,7 +160,7 @@ int mian()
 {   
     Chessboard main_chessboard;
     unordered_map<char,Point> map4newchess;
-    int playcfg,round=2,current_player=1;
+    int playcfg,step=2,current_player=1;
     chess_for_deploy c[3];
     c[1].player = 1;
     c[2].player = 2;
@@ -129,10 +168,10 @@ int mian()
     //cin >> playcfg;
     SetInfoColor(1);
     cout << "第一轮" << endl;
-    auto p = c[1].deploy_chess();
+    auto p = c[1].deploy_chess(step);
     while (p==nullptr)
     {
-        p = c[1].deploy_chess();
+        p = c[1].deploy_chess(step);
     }
     SetInfoColor();
     main_chessboard.add({0, 0, 0}, move(p));
@@ -152,10 +191,10 @@ int mian()
     delete temp_chessboard;
     char enter_char;
     input(enter_char, 'A', char_id);
-    p = c[2].deploy_chess();
+    p = c[2].deploy_chess(step);
     while (p == nullptr)
     {
-        p = c[2].deploy_chess();
+        p = c[2].deploy_chess(step);
     }
     SetInfoColor();
     main_chessboard.add(map4newchess[enter_char], p);
@@ -171,12 +210,13 @@ int mian()
     Point temp_point;
     cid temp_cid;
     set<Point> s1, s2, s3;
-    while(1)//2回合之后开始的循环逻辑
+    while (c[1].not_lose(main_chessboard) && c[2].not_lose(main_chessboard)) // 2回合之后开始的循环逻辑
     {
         //FLAG://用户取消操作
         map4newchess.clear();
         system("cls");
         main_chessboard.print();
+        cout << "Step: " << step << endl;
         SetInfoColor(current_player);
         cout << "现在是玩家" << current_player << "的回合" << endl;
         cout << "选项：0=弃权，1=摆放，2=移动" << endl;
@@ -221,7 +261,7 @@ int mian()
                 system("pause");
                 continue;
             }
-            p = c[current_player].deploy_chess();
+            p = c[current_player].deploy_chess(step);
             if (p == nullptr)
             {
                 cout << "无效的操作，返回上一步..." << endl;
@@ -232,6 +272,12 @@ int mian()
             break;
         case '2':
             SetInfoColor(current_player);
+            if (!c[current_player].queendeployed())
+            {
+                cout << "没有放置蜂王，不允许移动棋子..." << endl;
+                system("pause");
+                continue;
+            }
             cout << "请输入移动的棋子的字母：";
             cin >> enter_char;
             temp_cid = {current_player, enter_char};
@@ -276,7 +322,7 @@ int mian()
             break;
         }
         switch_player(current_player);
-        round++;
+        step++;
     }
     return 1;
 }
