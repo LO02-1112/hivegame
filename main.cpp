@@ -56,7 +56,7 @@ void test()
 class chess_for_deploy
 {
 public:
-    int beequeen=1, spider=2, grasshopper=3,beetle=2,ant=3,player;char id = 'a'-1;
+    int beequeen=1, spider=2, grasshopper=3,beetle=2,ant=3,player;char id = 'A'-1;
     shared_ptr<Chess> deploy_chess()
     {
         int x;
@@ -139,7 +139,7 @@ int mian()
     auto temp_chessboard=new Chessboard ;
     *temp_chessboard=main_chessboard;
     auto s = enum_nearby({0, 0, 0});
-    char char_id='a';
+    char char_id='A';
     for (auto it = s.begin(); it != s.end(); it++)
     {
         temp_chessboard->add(*it, make_shared<Chess>(-1, char_id));
@@ -151,7 +151,7 @@ int mian()
     cout << "第二轮 玩家2 请选择摆放棋子的位置: ";
     delete temp_chessboard;
     char enter_char;
-    input(enter_char, 'a', char_id);
+    input(enter_char, 'A', char_id);
     p = c[2].deploy_chess();
     while (p == nullptr)
     {
@@ -201,7 +201,7 @@ int mian()
             s3 = s1 - s2;
             temp_chessboard = new Chessboard;
             *temp_chessboard = main_chessboard;
-            char_id = 'a';
+            char_id = 'A';
             for (auto it = s3.begin(); it != s3.end();++it)
             {
                 temp_chessboard->add(*it, move(make_shared<Chess>(-1, char_id)));
@@ -213,7 +213,7 @@ int mian()
             temp_chessboard->print();
             delete temp_chessboard;
             SetInfoColor(current_player);
-            input(enter_char,'a',char_id);
+            input(enter_char,'A',char_id);
             SetInfoColor();
             if (enter_char==char_id)
             {
@@ -252,7 +252,7 @@ int mian()
             SetInfoColor();
             temp_chessboard = new Chessboard;
             *temp_chessboard = main_chessboard;
-            char_id = 'a';
+            char_id = 'A';
             for (auto it = s3.begin(); it != s3.end(); ++it)
             {
                 temp_chessboard->add(*it, move(make_shared<Chess>(-1, char_id)));
@@ -261,7 +261,7 @@ int mian()
             }
             temp_chessboard->print();
             SetInfoColor(current_player);
-            input(enter_char, 'a', char_id);
+            input(enter_char, 'A', char_id);
             SetInfoColor();
             if (enter_char == char_id)
             {
