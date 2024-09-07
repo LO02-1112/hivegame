@@ -80,6 +80,7 @@ public:
                 return true;
             }
         }
+        SetInfoColor();
         chessboard.print();
         cout << "PLAYER " << player << " 的蜂王被包围了，输掉了游戏。" << endl;
         return false;
