@@ -34,6 +34,7 @@ class Grasshopper : public Chess
 {
 public:
     Grasshopper(int player, char idx) : Chess(player, idx, "🦗") {};
+    set<Point> get_dest(cid id, Chessboard &chessboard) const;
 };
 
 //蚂蚁
@@ -49,6 +50,7 @@ class Beetle : public Chess
 {
 public:
     Beetle(int player, char idx) : Chess(player, idx, "🪲") {};
+    set<Point> get_dest(cid id, Chessboard &chessboard) const;
 };
 
 //蜘蛛

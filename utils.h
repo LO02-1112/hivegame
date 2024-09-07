@@ -73,5 +73,6 @@ struct single_line
 };
 set<Point> enum_nearby(Point p);
 set<Point> enum_nearby(set<Point> &ps);
+set<Point> enum_nearby_all(set<Point> &ps);
 void set_minmax(int *min, int *max, int target);
 #endif

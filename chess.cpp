@@ -40,8 +40,6 @@ std::set<Point> diffusion(Point ori, set<Point> &range, set<Point> &all_chesses,
         current = next;        
         next.clear();
     }
-    
-
 }
 
 bool Chess::can_move()
@@ -103,4 +101,54 @@ set<Point> Ant::get_dest(cid id, Chessboard &chessboard) const
     allchesses = chessboard.get_chess(0);
     allchesses.erase(ori);
     return diffusion(ori, range, allchesses, 0);
+}
+
+set<Point> Grasshopper::get_dest(cid id, Chessboard &chessboard) const
+{
+    set<Point> ret, allchesses;
+    Point temp;
+    Point ori = chessboard.id2pnt[id];    
+    if (!chessboard.isConnected(ori))
+    {
+        std::cout << "not connected" << endl;
+        return ret;
+    }
+    allchesses = chessboard.get_chess(0);
+    for(const Point &direction : DIRECTIONS)
+    {
+        temp = ori;
+        while (allchesses.count(temp)!=0)
+        {
+            temp = temp + direction;
+        }
+        ret.insert(temp);
+    }
+    return ret - enum_nearby(ori);
+}
+
+set<Point> Beetle::get_dest(cid id, Chessboard &chessboard) const
+{
+    set<Point> ret, allchesses,range;
+    Point ori = chessboard.id2pnt[id];
+    ori.layer = 0;
+    Point p;
+    if (!chessboard.isConnected(ori))
+    {
+        std::cout << "not connected" << endl;
+        return ret;
+    }
+    allchesses = chessboard.get_chess(0);
+    allchesses.erase(ori);
+    range = enum_nearby_all(allchesses);
+    range = range * enum_nearby(ori);
+    for (auto it = range.begin(); it != range.end(); ++it)
+    {
+        p = *it;
+        while (allchesses.count(p)>0)
+        {
+            p.layer++;
+        }
+        ret.insert(p);
+    }
+    return ret;
 }
