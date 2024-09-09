@@ -1,8 +1,10 @@
 #ifndef UTILS_H
 #define UTILS_H
+#include <iostream>
 #include <string>
 #include <set>
 #include <vector>
+
 using namespace std;
 
 void SetConsoleColor(int textColor, int backgroundColor);
@@ -72,7 +74,36 @@ struct single_line
     string str;
 };
 set<Point> enum_nearby(Point p);
+
 set<Point> enum_nearby(set<Point> &ps);
+
 set<Point> enum_nearby_all(set<Point> &ps);
+
 void set_minmax(int *min, int *max, int target);
+
+template<typename T>
+T input(T lb, T ub)
+{
+    T x;
+    while (true)
+    {
+        cout << "请输入" << lb << "到" << ub << "之间的值：";
+        cin >> x;
+        if (cin.fail())
+        {
+            cin.clear();  // 清除输入流错误状态
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');  // 跳过无效输入
+            cout << "输入无效，请重新输入。" << endl;
+            continue;  // 重新进行输入
+        }
+
+        // 检查输入是否在合法范围内
+        if (x < lb || x > ub)
+        {
+            cout << "输入的值超出范围！" << endl;
+            continue;  // 重新进行输入
+        }
+        return x;
+    }
+}
 #endif
