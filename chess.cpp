@@ -155,13 +155,13 @@ set<Point> Beetle::get_dest(cid id, Chessboard &chessboard) const
         cout << "你不能控制被压住的棋子..." << endl;
         return ret;
     }
-    ori.layer = 0;
     Point p;
     if (!chessboard.isConnected(ori))
     {
         std::cout << "not connected" << endl;
         return ret;
-    }
+    }    
+    ori.layer = 0;
     allchesses = chessboard.get_chess(0);
     allchesses.erase(ori);
     range = enum_nearby_all(allchesses);
