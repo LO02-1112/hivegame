@@ -87,7 +87,7 @@ T input(T lb, T ub)
     T x;
     while (true)
     {
-        cout << "请输入" << lb << "到" << ub << "之间的值：";
+        cout << "请输入" << lb << "到" << ub << "之间的值(最后一个字符是取消)：";
         cin >> x;
         if (cin.fail())
         {
