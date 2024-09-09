@@ -142,7 +142,7 @@ int startgame()
     cout << "第二轮 玩家2 请选择摆放棋子的位置: ";
     delete temp_chessboard;
     char enter_char;
-    enter_char = input('A', char_id);
+    enter_char = input('A', --char_id);
     p = c[2].deploy_chess(step);
     while (p == nullptr)
     {
