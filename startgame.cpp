@@ -39,6 +39,8 @@ bool Chess_for_deploy::not_lose(Chessboard& chessboard)
     SetInfoColor();
     chessboard.print();
     cout << "PLAYER " << player << " 的蜂王被包围了，输掉了游戏。" << endl;
+    system("pause");
+    system("cls");
     return false;
 }
 
