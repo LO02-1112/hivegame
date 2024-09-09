@@ -15,6 +15,10 @@ bool Chess_for_deploy::queendeployed()
     return beequeen == 0;
 }
 
+char Chess_for_deploy::getid() const
+{
+    return id+1;
+}
 
 bool Chess_for_deploy::not_lose(Chessboard& chessboard)
 {
@@ -223,7 +227,7 @@ int startgame()
                 continue;
             }
             cout << "请输入移动的棋子的字母：";
-            cin >> enter_char;
+            enter_char=input('A',c[current_player].getid());
             temp_cid = {current_player, enter_char};
             if (main_chessboard.id2pnt.count(temp_cid)==0)
             {
