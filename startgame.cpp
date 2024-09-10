@@ -10,7 +10,7 @@ using namespace std;
 Chess_for_deploy::Chess_for_deploy() 
     : beequeen(1), spider(2), grasshopper(3), beetle(2), ant(3), id('A' - 1), queenid(0), player(0) {}
 
-bool Chess_for_deploy::queendeployed()
+bool Chess_for_deploy::queendeployed() const
 {
     return beequeen == 0;
 }
@@ -20,7 +20,7 @@ char Chess_for_deploy::getid() const
     return id+1;
 }
 
-bool Chess_for_deploy::not_lose(Chessboard& chessboard)
+bool Chess_for_deploy::not_lose(Chessboard &chessboard) const
 {
     if (beequeen != 0)
     {
@@ -151,7 +151,7 @@ int startgame()
         p = c[2].deploy_chess(step);
     }
     SetInfoColor();
-    main_chessboard.add(map4newchess[enter_char], p);
+    main_chessboard.add(map4newchess.at(enter_char), p);
     map4newchess.clear();
     main_chessboard.print();
     int otherplayer;
@@ -218,7 +218,7 @@ int startgame()
                 system("pause");
                 continue;
             }
-            main_chessboard.add(map4newchess[enter_char],move(p));
+            main_chessboard.add(map4newchess.at(enter_char), move(p));
             break;
         case 2:
             SetInfoColor(current_player);
@@ -267,7 +267,7 @@ int startgame()
                 system("pause");
                 continue;
             }
-            main_chessboard.move_chess(temp_cid, map4newchess[enter_char]);
+            main_chessboard.move_chess(temp_cid, map4newchess.at(enter_char));
             break;
 
         default:
