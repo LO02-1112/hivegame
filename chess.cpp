@@ -4,7 +4,7 @@
 #include "chessboard.h"
 using namespace std;
 
-std::set<Point> diffusion(Point ori, set<Point> &range, set<Point> &all_chesses, int radius) // 我命名为扩散算法，依次枚举可到位置，蜂王把半径设为1，蜘蛛3，蚂蚁0（代表无限）
+std::set<Point> diffusion(Point ori, const set<Point> &range,const set<Point> &all_chesses, int radius) // 我命名为扩散算法，依次枚举可到位置，蜂王把半径设为1，蜘蛛3，蚂蚁0（代表无限）
 {
     int round = 0;
     set<Point> previous, current, next, x, ret;
@@ -42,10 +42,6 @@ std::set<Point> diffusion(Point ori, set<Point> &range, set<Point> &all_chesses,
     }
 }
 
-bool Chess::can_move()
-{
-    return false; // areConnected();
-}
 graph Chess::to_graph(){
     string cha(1, id.id);
     string line13 = cha + "    " + cha;
@@ -54,16 +50,16 @@ graph Chess::to_graph(){
     return x;
 }
 
-set<Point> Chess::get_dest(cid id, Chessboard &chessboard) const
+set<Point> Chess::get_dest(cid id, const Chessboard &chessboard) const
 {
     set<Point> r;
     return r;
 }
 
-set<Point> Beequeen::get_dest(cid id, Chessboard& chessboard ) const 
+set<Point> Beequeen::get_dest(cid id, const Chessboard& chessboard ) const 
 {
     set<Point> range, allchesses;
-    Point ori = chessboard.id2pnt[id];
+    Point ori = chessboard.id2pnt.at(id);
     if (chessboard.check_upper(ori))
     {
         cout << "你不能控制被压住的棋子..." << endl;
@@ -79,10 +75,10 @@ set<Point> Beequeen::get_dest(cid id, Chessboard& chessboard ) const
     allchesses.erase(ori);
     return diffusion(ori, range, allchesses, 1);
 }
-set<Point> Spider::get_dest(cid id, Chessboard &chessboard) const
+set<Point> Spider::get_dest(cid id, const Chessboard &chessboard) const
 {
     set<Point> range,allchesses;
-    Point ori = chessboard.id2pnt[id];
+    Point ori = chessboard.id2pnt.at(id);
     if (chessboard.check_upper(ori))
     {
         cout << "你不能控制被压住的棋子..." << endl;
@@ -98,10 +94,10 @@ set<Point> Spider::get_dest(cid id, Chessboard &chessboard) const
     allchesses.erase(ori);
     return diffusion(ori, range,allchesses, 3);
 }
-set<Point> Ant::get_dest(cid id, Chessboard &chessboard) const
+set<Point> Ant::get_dest(cid id, const Chessboard &chessboard) const
 {
     set<Point> range,allchesses;
-    Point ori = chessboard.id2pnt[id];
+    Point ori = chessboard.id2pnt.at(id);
     if (chessboard.check_upper(ori))
     {
         cout << "你不能控制被压住的棋子..." << endl;
@@ -118,11 +114,11 @@ set<Point> Ant::get_dest(cid id, Chessboard &chessboard) const
     return diffusion(ori, range, allchesses, 0);
 }
 
-set<Point> Grasshopper::get_dest(cid id, Chessboard &chessboard) const
+set<Point> Grasshopper::get_dest(cid id, const Chessboard &chessboard) const
 {
     set<Point> ret, allchesses;
     Point temp;
-    Point ori = chessboard.id2pnt[id];
+    Point ori = chessboard.id2pnt.at(id);
     if (chessboard.check_upper(ori))
     {
         cout << "你不能控制被压住的棋子..." << endl;
@@ -146,10 +142,10 @@ set<Point> Grasshopper::get_dest(cid id, Chessboard &chessboard) const
     return ret - enum_nearby(ori);
 }
 
-set<Point> Beetle::get_dest(cid id, Chessboard &chessboard) const
+set<Point> Beetle::get_dest(cid id, const Chessboard &chessboard) const
 {
     set<Point> ret, allchesses,range;
-    Point ori = chessboard.id2pnt[id];
+    Point ori = chessboard.id2pnt.at(id);
     if (chessboard.check_upper(ori))
     {
         cout << "你不能控制被压住的棋子..." << endl;

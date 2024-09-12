@@ -73,11 +73,11 @@ struct single_line
     int color;
     string str;
 };
-set<Point> enum_nearby(Point p);
+set<Point> enum_nearby(const Point& p);
 
-set<Point> enum_nearby(set<Point> &ps);
+set<Point> enum_nearby(const set<Point> &ps);
 
-set<Point> enum_nearby_all(set<Point> &ps);
+set<Point> enum_nearby_all(const set<Point> &ps);
 
 void set_minmax(int *min, int *max, int target);
 

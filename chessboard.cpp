@@ -45,7 +45,7 @@ void Chessboard::print() { //输出棋盘
 }
 
 // 根据玩家号（0=全部,1,2），枚举全部的棋子，返回集合
-std::set<Point> Chessboard::get_chess(int i)
+std::set<Point> Chessboard::get_chess(int i) const
 {
     set<Point> ret;
     for (auto it = id2pnt.begin(); it != id2pnt.end(); ++it)
@@ -59,7 +59,7 @@ std::set<Point> Chessboard::get_chess(int i)
     return ret;
 }
 
-std::set<Point> Chessboard::enum_mov_dest(Point p)//列举‘蚂蚁’全部可能到达的位置（不考虑卡位）
+std::set<Point> Chessboard::enum_mov_dest(Point p) const // 列举‘蚂蚁’全部可能到达的位置（不考虑卡位）
 {
     set<Point> x = get_chess(0);
     x.erase(p);
@@ -68,7 +68,7 @@ std::set<Point> Chessboard::enum_mov_dest(Point p)//列举‘蚂蚁’全部可�
     return ret;
 }
 
-bool Chessboard::isConnected(const Point &p)
+bool Chessboard::isConnected(const Point &p) const
 { // 判断棋盘连通性
     std::set<Point> Allchesses = get_chess(0);
     Allchesses.erase(p);
@@ -77,7 +77,7 @@ bool Chessboard::isConnected(const Point &p)
     }
     return false;
 }
-bool Chessboard::bfs(std::set<Point> &Allchesses) {
+bool Chessboard::bfs(std::set<Point> &Allchesses) const {
     std::queue<Point> toVisit;
     Point start = *(Allchesses.begin());
     toVisit.push(start);
@@ -119,7 +119,7 @@ void Chessboard::move_chess(cid id,Point target){
     board.erase(it);
 }
 
-bool Chessboard::check_upper(Point p)//有压在上方的棋子时返回True
+bool Chessboard::check_upper(Point p) const//有压在上方的棋子时返回True
 {
     p.layer++;
     return (board.count(p) > 0);
