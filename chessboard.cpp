@@ -8,7 +8,7 @@ void Chessboard::add(Point p, shared_ptr<Chess> i) {
     id2pnt.insert({i->id,p});
     board.insert({p,move(i)});        
     set_minmax(&minx, &maxx, p.x);
-    set_minmax(&minz, &maxz, p.z);    
+    set_minmax(&minz, &maxz, p.z);
 }
 
 void Chessboard::print() { //输出棋盘
@@ -117,6 +117,7 @@ void Chessboard::move_chess(cid id,Point target){
     set_minmax(&minx, &maxx, target.x);
     set_minmax(&minz, &maxz, target.z);
     board.erase(it);
+    // 考虑到游戏棋盘一致性，移动时不回收边界
 }
 
 bool Chessboard::check_upper(Point p) const//有压在上方的棋子时返回True

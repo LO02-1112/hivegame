@@ -4,7 +4,9 @@
 #include "chessboard.h"
 using namespace std;
 
-std::set<Point> diffusion(Point ori, const set<Point> &range,const set<Point> &all_chesses, int radius) // 我命名为扩散算法，依次枚举可到位置，蜂王把半径设为1，蜘蛛3，蚂蚁0（代表无限）
+// 我命名为扩散算法，依次枚举可到位置，蜂王把半径设为1，蜘蛛3，蚂蚁0（代表无限）
+// radius表示步数。stuck表示是否考虑卡位的情况，原版的几个棋子应该设置为true
+std::set<Point> diffusion(Point ori, const set<Point> &range,const set<Point> &all_chesses, int radius,bool stuck) 
 {
     int round = 0;
     set<Point> previous, current, next, x, ret;
@@ -17,7 +19,7 @@ std::set<Point> diffusion(Point ori, const set<Point> &range,const set<Point> &a
             x = (enum_nearby(*it)*range)-previous;
             for (auto it2 = x.begin(); it2 != x.end(); ++it2)
             {
-                if (!((enum_nearby(*it)*enum_nearby(*it2))-all_chesses).empty())
+                if (!stuck||!((enum_nearby(*it)*enum_nearby(*it2))-all_chesses).empty())
                 {
                     next.insert(*it2);
                 }
@@ -73,7 +75,7 @@ set<Point> Beequeen::get_dest(cid id, const Chessboard& chessboard ) const
     range = chessboard.enum_mov_dest(ori);
     allchesses = chessboard.get_chess(0);
     allchesses.erase(ori);
-    return diffusion(ori, range, allchesses, 1);
+    return diffusion(ori, range, allchesses, 1, true);
 }
 set<Point> Spider::get_dest(cid id, const Chessboard &chessboard) const
 {
@@ -92,7 +94,7 @@ set<Point> Spider::get_dest(cid id, const Chessboard &chessboard) const
     range = chessboard.enum_mov_dest(ori);
     allchesses = chessboard.get_chess(0);
     allchesses.erase(ori);
-    return diffusion(ori, range,allchesses, 3);
+    return diffusion(ori, range, allchesses, 3, true);
 }
 set<Point> Ant::get_dest(cid id, const Chessboard &chessboard) const
 {
@@ -111,7 +113,7 @@ set<Point> Ant::get_dest(cid id, const Chessboard &chessboard) const
     range = chessboard.enum_mov_dest(ori);
     allchesses = chessboard.get_chess(0);
     allchesses.erase(ori);
-    return diffusion(ori, range, allchesses, 0);
+    return diffusion(ori, range, allchesses, 0, true);
 }
 
 set<Point> Grasshopper::get_dest(cid id, const Chessboard &chessboard) const
