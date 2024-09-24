@@ -12,7 +12,6 @@ void Chessboard::add(Point p, shared_ptr<Chess> i) {
 }
 
 void Chessboard::print() { //输出棋盘
-    int p = 0;
     // std::cout <<minx<<maxx<<minz<<maxz<<std::endl;
     for (int z = minz; z <= maxz;z++)
     {
@@ -32,7 +31,6 @@ void Chessboard::print() { //输出棋盘
                     printer.add(board.find(a)->second->to_graph());
                     foundxz = true;
                     break;
-                    p++;
                 }
             }
             if(!foundxz){
