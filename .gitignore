@@ -1,6 +1,5 @@
 .vscode
-main.exe
-utils.exe
+*.exe
 out
 build
 CMakePresets.json
