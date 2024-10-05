@@ -8,7 +8,7 @@
 using namespace std;
 
 Chess_for_deploy::Chess_for_deploy() 
-    : beequeen(1), spider(2), grasshopper(3), beetle(2), ant(3), id('A' - 1), queenid(0), player(0) {}
+    : beequeen(1), spider(2), grasshopper(3), beetle(2), ant(3), mosquito(1), ladybug(1), id('A' - 1), queenid(0), player(0) {}
 
 bool Chess_for_deploy::queendeployed() const
 {
@@ -54,9 +54,14 @@ std::shared_ptr<Chess> Chess_for_deploy::deploy_chess(int step)
     cout << "  2.spider:" << spider;
     cout << "  3.grasshopper:" << grasshopper;
     cout << "  4.beetle:" << beetle;
-    cout << "  5.ant:" << ant << endl;
+    cout << "  5.ant:" << ant;
+    //扩展棋子在此加入
+    cout << "  6.mosquito:" <<mosquito;
+    cout << "  7.ladybug:" << ladybug;
+    //
+    cout << endl;
     cout << "请选择棋子: ";
-    x = input(1,5);
+    x = input(1,7);
     SetInfoColor();
     
     if (step >= 8 && beequeen != 0)
@@ -104,6 +109,18 @@ std::shared_ptr<Chess> Chess_for_deploy::deploy_chess(int step)
         ant--;
         id++;
         return move(make_shared<Ant>(player, id));
+    case 6:
+        if (mosquito == 0)
+            return nullptr;
+        mosquito--;
+        id++;
+        return move(make_shared<Mosquito>(player, id));
+    case 7:
+        if (ladybug == 0)
+            return nullptr;
+        ladybug--;
+        id++;
+        return move(make_shared<Ladybug>(player, id));
     default:
         return nullptr;
     }

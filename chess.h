@@ -60,4 +60,20 @@ public:
     set<Point> get_dest(cid id, const Chessboard &chessboard) const;
 };
 
+//蚊子
+class Mosquito:public Chess
+{
+    public:
+        Mosquito(int player, char idx) : Chess(player, idx, "🦟") {};
+        set<Point> get_dest(cid id, const Chessboard &chessboard) const;
+};
+
+//瓢虫
+class Ladybug : public Chess
+{
+public:
+    Ladybug(int player, char idx) : Chess(player, idx, "🐞") {};
+    set<Point> get_dest(cid id, const Chessboard &chessboard) const;
+};
+
 #endif

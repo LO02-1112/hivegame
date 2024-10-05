@@ -26,8 +26,7 @@ public:
     std::shared_ptr<Chess> deploy_chess(int step);
 
 private:
-    int beequeen, spider, grasshopper, beetle, ant;
+    int beequeen, spider, grasshopper, beetle, ant, mosquito, ladybug;
     char id, queenid;
-
 };
 #endif
