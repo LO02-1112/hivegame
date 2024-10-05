@@ -5,6 +5,7 @@
 #include <set>
 #include <vector>
 #include <limits>
+#include <sstream>
 using namespace std;
 
 void SetConsoleColor(int textColor, int backgroundColor);
@@ -101,6 +102,79 @@ T input(T lb, T ub)
         if (x < lb || x > ub)
         {
             cout << "输入的值超出范围！" << endl;
+            continue;  // 重新进行输入
+        }
+        return x;
+    }
+}
+template<typename T>
+T AIinputchar(T lb, T ub)
+{
+    T x;
+    while (true)
+    {
+        T randomChar = static_cast<T>(rand() % (ub - lb) + lb);  // 随机生成 lb 到 ub 之前的字符
+        istringstream fakeInput(string(1, randomChar));
+        fakeInput>>x;
+        if (fakeInput.fail())
+        {
+            fakeInput.clear();  // 清除输入流错误状态
+            fakeInput.ignore(numeric_limits<streamsize>::max(), '\n');  // 跳过无效输入
+            continue;  // 重新进行输入
+        }
+
+        // 检查输入是否在合法范围内
+        if (x < lb || x > ub)
+        {
+            continue;  // 重新进行输入
+        }
+        return x;
+    }
+}
+template<typename T>
+T AIinputnum15(T lb, T ub)
+{
+    T x;
+    while (true)
+    {
+        T randomNum = static_cast<T>(rand() % (ub - lb + 1) + lb);  // 随机生成 lb 到 ub 范围内的数字
+        istringstream fakeInput(to_string(randomNum));
+        fakeInput>>x;
+        if (fakeInput.fail())
+        {
+            fakeInput.clear();  // 清除输入流错误状态
+            fakeInput.ignore(numeric_limits<streamsize>::max(), '\n');  // 跳过无效输入
+            continue;  // 重新进行输入
+        }
+
+        // 检查输入是否在合法范围内
+        if (x < lb || x > ub)
+        {
+            continue;  // 重新进行输入
+        }
+        return x;
+    }
+}
+template<typename T>
+T AIinputnum012(T lb, T ub)
+{
+    T x;
+    while (true)
+    {
+        
+        T randomNum = static_cast<T>(rand() % (ub - lb) + lb + 1); 
+        istringstream fakeInput(to_string(randomNum));
+        fakeInput>>x;
+        if (fakeInput.fail())
+        {
+            fakeInput.clear();  // 清除输入流错误状态
+            fakeInput.ignore(numeric_limits<streamsize>::max(), '\n');  // 跳过无效输入
+            continue;  // 重新进行输入
+        }
+
+        // 检查输入是否在合法范围内
+        if (x < lb || x > ub)
+        {
             continue;  // 重新进行输入
         }
         return x;
