@@ -21,7 +21,7 @@ public:
     Chess_for_deploy();
 
     bool queendeployed() const;
-    bool not_lose(Chessboard &chessboard) const;
+    bool not_lose(const Chessboard &chessboard) const;
     char getid() const;
     std::shared_ptr<Chess> deploy_chess(int step);
 

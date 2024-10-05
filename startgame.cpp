@@ -20,7 +20,7 @@ char Chess_for_deploy::getid() const
     return id+1;//返回当前最大的字母+1，便于取消操作。
 }
 
-bool Chess_for_deploy::not_lose(Chessboard &chessboard) const
+bool Chess_for_deploy::not_lose(const Chessboard &chessboard) const
 {
     if (beequeen != 0)
     {
