@@ -13,14 +13,14 @@ void switch_player(int &p);
 int aiInput(int lower, int upper);
 char aiInput(char lower, char upper);
 int startgame();
-int startAIgame();
 class Chess_for_deploy
 {
-public:
+private:
     int player;
-
+    bool is_ai;
+public:
     Chess_for_deploy();
-
+    void SetAttr(int p, bool ai) { player = p; is_ai=ai;}
     bool queendeployed() const;
     bool not_lose(const Chessboard &chessboard) const;
     char getid() const;
