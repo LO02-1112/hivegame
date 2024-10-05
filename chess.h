@@ -10,10 +10,12 @@ class Chessboard;
 //棋子基类定义
 class Chess
 {
-public:
+private:
     //Point position;
     cid id;
     string pattern;
+public:
+    const cid& getID() const { return id; }
     Chess(int player, char idx) : id({player, idx}),pattern("++") {}
     Chess(int player, char idx,string pattern) : id({player, idx}), pattern(pattern) {}
     graph to_graph(); // 定义棋子的图形输出

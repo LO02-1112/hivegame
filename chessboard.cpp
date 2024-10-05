@@ -5,7 +5,7 @@
 #include "utils.h"
 // #include <iostream>
 void Chessboard::add(Point p, shared_ptr<Chess> i) {
-    id2pnt.insert({i->id,p});
+    id2pnt.insert({i->getID(),p});
     board.insert({p,move(i)});        
     set_minmax(&minx, &maxx, p.x);
     set_minmax(&minz, &maxz, p.z);
