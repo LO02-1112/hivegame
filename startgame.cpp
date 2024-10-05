@@ -26,7 +26,7 @@ bool Chess_for_deploy::not_lose(Chessboard &chessboard) const
     {
         return true;
     }
-    Point p = chessboard.id2pnt[{player, queenid}];
+    Point p = chessboard.ID2Pnt({player, queenid});
     auto check = enum_nearby(p);
     auto allchess = chessboard.get_chess(0);
     for (auto it = check.begin(); it != check.end(); ++it)
@@ -248,14 +248,14 @@ int startgame()
             cout << "请输入移动的棋子的字母：";
             enter_char=input('A',c[current_player].getid());
             temp_cid = {current_player, enter_char};
-            if (main_chessboard.id2pnt.count(temp_cid)==0)
+            if (main_chessboard.getId2PntMap().count(temp_cid)==0)
             {
                 cout << "无效的操作，返回上一步..." << endl;
                 system("pause");
                 continue;
             }            
-            temp_point = main_chessboard.id2pnt[temp_cid];
-            s3 = main_chessboard.board[temp_point]->get_dest(temp_cid,main_chessboard);
+            temp_point = main_chessboard.ID2Pnt(temp_cid);
+            s3 = (main_chessboard.getBoard()).at(temp_point)->get_dest(temp_cid,main_chessboard);
             if (s3.empty())
             {
                 cout << "棋子没有可走的目标格子，返回上一步..." << endl;
