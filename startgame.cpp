@@ -134,67 +134,6 @@ std::shared_ptr<Chess> Chess_for_deploy::deploy_chess(int step)
         return nullptr;
     }
 }
-std::shared_ptr<Chess> Chess_for_deploy::AI_deploy_chess(int step)
-{
-    int x;
-    SetInfoColor(player);
-    cout << "Player " << player << "'s Turn" << endl;
-    cout << "1.beequeen:" << beequeen;
-    cout << "  2.spider:" << spider;
-    cout << "  3.grasshopper:" << grasshopper;
-    cout << "  4.beetle:" << beetle;
-    cout << "  5.ant:" << ant << endl;
-    cout << "请选择棋子: ";
-    x = AIinput(1, 5);
-    SetInfoColor();
-    
-    if (step >= 8 && beequeen != 0)
-    {
-        SetInfoColor(player);
-        SetInfoColor();
-        beequeen--;
-        id++;
-        queenid = id;
-        return move(make_shared<Beequeen>(player, id));
-    }
-
-    switch (x)
-    {
-    case 1:
-        if (beequeen == 0)
-            return nullptr;
-        beequeen--;
-        id++;
-        queenid = id;
-        return move(make_shared<Beequeen>(player, id));
-    case 2:
-        if (spider == 0)
-            return nullptr;
-        spider--;
-        id++;
-        return move(make_shared<Spider>(player, id));
-    case 3:
-        if (grasshopper == 0)
-            return nullptr;
-        grasshopper--;
-        id++;
-        return move(make_shared<Grasshopper>(player, id));
-    case 4:
-        if (beetle == 0)
-            return nullptr;
-        beetle--;
-        id++;
-        return move(make_shared<Beetle>(player, id));
-    case 5:
-        if (ant == 0)
-            return nullptr;
-        ant--;
-        id++;
-        return move(make_shared<Ant>(player, id));
-    default:
-        return nullptr;
-    }
-}
 
 int startgame()
 {
@@ -275,7 +214,7 @@ int startgame()
            x = input(0,2);
         }
         else{
-            x = aiInput(1, 2);
+            x = AIinput(1, 2);
         }        
         SetInfoColor();
         switch (x)
@@ -418,16 +357,4 @@ void switch_player(int &p)
         p = 2;
     else
         p = 1;
-}
-
-int aiInput(int lower, int upper)
-{
-    // AI 生成一个随机数，模拟玩家输入
-    return rand() % (upper - lower + 1) + lower;
-}
-
-char aiInput(char lower, char upper)
-{
-    // AI 生成一个随机字母，模拟玩家输入
-    return static_cast<char>(rand() % (upper - lower + 1) + lower);
 }
