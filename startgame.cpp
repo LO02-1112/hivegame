@@ -135,9 +135,18 @@ std::shared_ptr<Chess> Chess_for_deploy::deploy_chess(int step)
     }
 }
 
-int startgame()
+StartGame* StartGame::self = nullptr;
+
+StartGame& StartGame::GetInstance()
 {
-    int use_ai;
+    if(self==nullptr)
+        self = new StartGame;
+    return *self;
+}
+
+
+int StartGame::startgame()
+{    
     cout << "请选择游戏模式: 1. 双人对战  2. 玩家 vs 电脑 (AI)" << endl;
     use_ai = input(1, 2);
     if (use_ai == 1)
@@ -147,11 +156,8 @@ int startgame()
     else 
     {
         use_ai=1; // AI对战模式
-    }
-    Chessboard main_chessboard;
-    unordered_map<char,Point> map4newchess;
-    int playcfg,step=3,current_player=1;
-    Chess_for_deploy c[3];
+    }    
+    unordered_map<char,Point> map4newchess;    
     c[1].SetAttr(1,false);
     c[2].SetAttr(2, use_ai);
     SetInfoColor(1);
@@ -351,7 +357,7 @@ int startgame()
 }
 
 
-void switch_player(int &p)
+void StartGame::switch_player(int &p)
 {
     if (p==1)
         p = 2;
