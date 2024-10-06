@@ -26,6 +26,5 @@ public:
     bool not_lose(const Chessboard &chessboard) const;
     char getid() const;
     std::shared_ptr<Chess> deploy_chess(int step);
-
 }; 
 #endif

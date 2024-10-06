@@ -110,17 +110,7 @@ T input(T lb, T ub)
 template<typename T>
 T AIinput(T lb, T ub)
 {
-    T x;
-    while (true)
-    {
-        T x = static_cast<T>(rand() % (ub - lb) + lb);  // 随机生成 lb 到 ub 之前的字符
-        // 检查输入是否在合法范围内
-        if (x < lb || x > ub)
-        {
-            continue;  // 重新进行输入
-        }
-        return x;
-    }
+    return static_cast<T>(rand() % (ub - lb) + lb);  // 随机生成 lb 到 ub 之前的字符
 }
 
 #endif
