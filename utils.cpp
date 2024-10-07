@@ -84,7 +84,7 @@ std::set<Point> operator*(const std::set<Point> &set1, const std::set<Point> &se
     return ret;
 }
 
-set<Point> enum_nearby(const Point& p)//枚举单个点
+set<Point> enum_nearby(const Point& p)//枚举单个点周围的点(不含这个点本身)
 {
     set<Point> ret;
     for (const Point &direction : DIRECTIONS)
@@ -99,8 +99,7 @@ set<Point> enum_nearby(const set<Point>& ps)//枚举一组点,返回和这一组
     set<Point> ret;
     for (auto it = ps.begin(); it != ps.end(); ++it)
     {
-        auto x = enum_nearby(*it);
-        ret=ret+x;
+        ret=ret+enum_nearby(*it);
     }
     ret=ret-ps;//去除本身
     return ret;
@@ -110,8 +109,8 @@ set<Point> enum_nearby_all(const set<Point> &ps) // 枚举一组点,返回和这
     set<Point> ret;
     for (auto it = ps.begin(); it != ps.end(); ++it)
     {
-        auto x = enum_nearby(*it);
-        ret = ret + x;
+        ret = ret + enum_nearby(*it);
+        ret.insert(*it);
     }
     return ret;
 }

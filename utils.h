@@ -106,4 +106,11 @@ T input(T lb, T ub)
         return x;
     }
 }
+
+template<typename T>
+T AIinput(T lb, T ub)
+{
+    return static_cast<T>(rand() % (ub - lb) + lb);  // 随机生成 lb 到 ub 之前的字符
+}
+
 #endif

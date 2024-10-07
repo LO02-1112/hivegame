@@ -5,20 +5,21 @@
 #include "utils.h"
 // #include <iostream>
 void Chessboard::add(Point p, shared_ptr<Chess> i) {
-    id2pnt.insert({i->id,p});
+    id2pnt.insert({i->getID(),p});
     board.insert({p,move(i)});        
     set_minmax(&minx, &maxx, p.x);
     set_minmax(&minz, &maxz, p.z);
 }
 
-void Chessboard::print() { //输出棋盘
+void Chessboard::print() const { //输出棋盘
     // std::cout <<minx<<maxx<<minz<<maxz<<std::endl;
+    Printer* printer = new Printer;
     for (int z = minz; z <= maxz;z++)
     {
         for (int p = 0; p<z - minz;p++)
         {
             graph g = {-1, "   ", "   ", "   "}; // 输出3格空气
-            printer.add(g);                    
+            printer->add(g);                    
         }
         for (int x = minx; x <= maxx; x++)
         {
@@ -28,18 +29,19 @@ void Chessboard::print() { //输出棋盘
                 a = {x, z,layer};
                 if (board.count(a)>0)
                 {
-                    printer.add(board.find(a)->second->to_graph());
+                    printer->add(board.find(a)->second->to_graph());
                     foundxz = true;
                     break;
                 }
             }
             if(!foundxz){
                 graph g = {-1, "      ", "      ", "      "}; // 输出6格空气
-                printer.add(g); 
+                printer->add(g); 
                 }            
         }
-        printer.print();
+        printer->print();
     }
+    delete printer;
 }
 
 // 根据玩家号（0=全部,1,2），枚举全部的棋子，返回集合

@@ -10,10 +10,12 @@ class Chessboard;
 //棋子基类定义
 class Chess
 {
-public:
+private:
     //Point position;
     cid id;
     string pattern;
+public:
+    const cid& getID() const { return id; }
     Chess(int player, char idx) : id({player, idx}),pattern("++") {}
     Chess(int player, char idx,string pattern) : id({player, idx}), pattern(pattern) {}
     graph to_graph(); // 定义棋子的图形输出
@@ -57,6 +59,22 @@ class Spider : public Chess
 {
 public:
     Spider(int player, char idx) : Chess(player, idx, "🕷️") {};
+    set<Point> get_dest(cid id, const Chessboard &chessboard) const;
+};
+
+//蚊子
+class Mosquito:public Chess
+{
+    public:
+        Mosquito(int player, char idx) : Chess(player, idx, "🦟") {};
+        set<Point> get_dest(cid id, const Chessboard &chessboard) const;
+};
+
+//瓢虫
+class Ladybug : public Chess
+{
+public:
+    Ladybug(int player, char idx) : Chess(player, idx, "🐞") {};
     set<Point> get_dest(cid id, const Chessboard &chessboard) const;
 };
 

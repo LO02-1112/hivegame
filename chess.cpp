@@ -61,7 +61,7 @@ set<Point> Chess::get_dest(cid id, const Chessboard &chessboard) const
 set<Point> Beequeen::get_dest(cid id, const Chessboard& chessboard ) const 
 {
     set<Point> range, allchesses;
-    Point ori = chessboard.id2pnt.at(id);
+    Point ori = chessboard.ID2Pnt(id);
     if (chessboard.check_upper(ori))
     {
         cout << "你不能控制被压住的棋子..." << endl;
@@ -80,7 +80,7 @@ set<Point> Beequeen::get_dest(cid id, const Chessboard& chessboard ) const
 set<Point> Spider::get_dest(cid id, const Chessboard &chessboard) const
 {
     set<Point> range,allchesses;
-    Point ori = chessboard.id2pnt.at(id);
+    Point ori = chessboard.ID2Pnt(id);
     if (chessboard.check_upper(ori))
     {
         cout << "你不能控制被压住的棋子..." << endl;
@@ -99,7 +99,7 @@ set<Point> Spider::get_dest(cid id, const Chessboard &chessboard) const
 set<Point> Ant::get_dest(cid id, const Chessboard &chessboard) const
 {
     set<Point> range,allchesses;
-    Point ori = chessboard.id2pnt.at(id);
+    Point ori = chessboard.ID2Pnt(id);
     if (chessboard.check_upper(ori))
     {
         cout << "你不能控制被压住的棋子..." << endl;
@@ -120,7 +120,7 @@ set<Point> Grasshopper::get_dest(cid id, const Chessboard &chessboard) const
 {
     set<Point> ret, allchesses;
     Point temp;
-    Point ori = chessboard.id2pnt.at(id);
+    Point ori = chessboard.ID2Pnt(id);
     if (chessboard.check_upper(ori))
     {
         cout << "你不能控制被压住的棋子..." << endl;
@@ -147,7 +147,7 @@ set<Point> Grasshopper::get_dest(cid id, const Chessboard &chessboard) const
 set<Point> Beetle::get_dest(cid id, const Chessboard &chessboard) const
 {
     set<Point> ret, allchesses,range;
-    Point ori = chessboard.id2pnt.at(id);
+    Point ori = chessboard.ID2Pnt(id);
     if (chessboard.check_upper(ori))
     {
         cout << "你不能控制被压住的棋子..." << endl;
@@ -167,11 +167,70 @@ set<Point> Beetle::get_dest(cid id, const Chessboard &chessboard) const
     for (auto it = range.begin(); it != range.end(); ++it)
     {
         p = *it;
-        while (allchesses.count(p)>0)
+        while (chessboard.getBoard().count(p)>0)
         {
             p.layer++;
         }
         ret.insert(p);
     }
+    return ret;
+}
+
+//根据百度百科，当在地面时模仿周围棋子的走法，但在上层时使用甲虫的走法
+set<Point> Mosquito::get_dest(cid id, const Chessboard &chessboard) const
+{
+    set<Point> ret, allchesses, range;
+    Point ori = chessboard.ID2Pnt(id);
+    allchesses = chessboard.get_chess(0);
+    if(ori.layer == 0)
+    {        
+        range = allchesses*enum_nearby(ori);
+        for(auto i : range)
+        {
+            if (typeid(*chessboard.getBoard().at(i)) != typeid(Mosquito))
+                ret = ret + chessboard.getBoard().at(i)->get_dest(id, chessboard);
+        }
+    }
+    else
+    {
+        for (; ori.layer >= 0;ori.layer--)
+        {
+            range = range + enum_nearby(ori)*allchesses;
+            range.insert(ori);
+        }
+        for(auto i:range)
+        {
+            if (typeid(*chessboard.getBoard().at(i)) == typeid(Beetle))
+            {
+                ret = chessboard.getBoard().at(i)->get_dest(id, chessboard);
+                break;
+            }                
+        }        
+    }
+    return ret;
+}
+
+set<Point> Ladybug::get_dest(cid id, const Chessboard &chessboard) const
+{
+    set<Point> ret, allchesses,range;
+    Point ori = chessboard.ID2Pnt(id);
+    if (chessboard.check_upper(ori))
+    {
+        cout << "你不能控制被压住的棋子..." << endl;
+        return ret;
+    }
+    if (!chessboard.isConnected(ori))
+    {
+        std::cout << "not connected" << endl;
+        return ret;
+    }
+    allchesses = chessboard.get_chess(0);
+    allchesses.erase(ori);
+    range = diffusion(ori, allchesses, ret, 2, false);
+    for(auto i:range)
+    {
+        ret = ret + (enum_nearby(i) - allchesses);
+    }
+    ret.erase(ori);
     return ret;
 }
