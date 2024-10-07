@@ -353,6 +353,8 @@ int StartGame::startgame()
         switch_player(current_player);
         step++;
     }
+    c[1] = Chess_for_deploy();//结束后重置棋子
+    c[2] = Chess_for_deploy();
     return 1;
 }
 
