@@ -163,6 +163,7 @@ int StartGame::startgame()
     SetInfoColor(1);
     cout << "第一轮" << endl;
     int step = 3;
+    int current_player = 1;
     auto p = c[1].deploy_chess(step);
     while (p==nullptr)
     {
