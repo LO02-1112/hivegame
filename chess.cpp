@@ -25,6 +25,7 @@ std::set<Point> diffusion(Point ori, const set<Point> &range,const set<Point> &a
                 }
             }
         }
+        next = next - current;
         round++;
         if(radius==0)
         {
