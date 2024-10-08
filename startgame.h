@@ -29,7 +29,7 @@ class StartGame
 {
 private:
     int use_ai;
-    int step = 3, current_player = 1;
+    int current_player = 1;
     Chessboard main_chessboard;
     Chess_for_deploy c[3];
     void switch_player(int &p);

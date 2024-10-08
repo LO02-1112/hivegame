@@ -162,6 +162,7 @@ int StartGame::startgame()
     c[2].SetAttr(2, use_ai);
     SetInfoColor(1);
     cout << "第一轮" << endl;
+    int step = 3;
     auto p = c[1].deploy_chess(step);
     while (p==nullptr)
     {
