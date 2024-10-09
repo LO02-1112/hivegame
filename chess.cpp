@@ -25,7 +25,7 @@ std::set<Point> diffusion(Point ori, const set<Point> &range,const set<Point> &a
                 }
             }
         }
-        next = next - current;
+        next = next - current;//禁止蜘蛛通过3步移动到只需2步可以移动到的位置，是否启用此行代码取决于未确定的规则。
         round++;
         if(radius==0)
         {
