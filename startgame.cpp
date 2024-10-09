@@ -357,6 +357,7 @@ int StartGame::startgame()
     }
     c[1] = Chess_for_deploy();//结束后重置棋子
     c[2] = Chess_for_deploy();
+    main_chessboard=Chessboard();
     return 1;
 }
 
