@@ -5,7 +5,7 @@
 #include <unordered_map>
 //🦟🦗🐜🐝🪲🐞🕷️
 class Chessboard;
-//棋子的ID:玩家1/2，小写字母id（绑定键盘）
+//棋子的ID:玩家1/2，大写字母id（绑定键盘）
 
 //棋子基类定义
 class Chess
